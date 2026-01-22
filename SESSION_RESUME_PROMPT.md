@@ -43,7 +43,7 @@ npm run dev
 - 프로젝트명: 청년있슈 (청년 정책 통합 플랫폼)
 - 프로젝트 경로: [실제 클론한 경로를 입력하세요. 예: C:\WebWork\youth-policy-figma]
 - GitHub 레포지토리: https://github.com/SqurareEgg/youth-policy-figma
-- 배포 URL: [Vercel 배포 URL을 입력하세요]
+- 배포 URL: https://youth-policy-figma.vercel.app
 
 ## 기술 스택
 - Vue 3 (Composition API)
@@ -292,6 +292,6 @@ DEVELOPMENT_GUIDE.md의 트러블슈팅 섹션을 확인하고
 이 프롬프트는 언제든지 수정하고 개선할 수 있습니다.
 
 **프로젝트 GitHub**: https://github.com/SqurareEgg/youth-policy-figma
-**Vercel 배포**: [배포 완료 후 URL 추가]
+**Vercel 배포**: https://youth-policy-figma.vercel.app
 
 **마지막 업데이트**: 2026-01-22

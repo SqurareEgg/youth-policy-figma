@@ -6,6 +6,8 @@
 ![Vue](https://img.shields.io/badge/Vue-3.4.0-green.svg)
 ![Quasar](https://img.shields.io/badge/Quasar-2.14.0-1976D2.svg)
 
+**🚀 Live Demo**: [https://youth-policy-figma.vercel.app](https://youth-policy-figma.vercel.app)
+
 ## 📋 프로젝트 개요
 
 청년있슈는 청년들이 필요한 정책 정보를 쉽게 찾고 학습할 수 있도록 돕는 통합 플랫폼입니다.
