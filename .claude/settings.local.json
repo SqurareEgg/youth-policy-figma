@@ -6,7 +6,8 @@
       "Bash(git commit -m \"$\\(cat <<''EOF''\nFeat: Supabase 연동 및 이메일 인증 회원가입 구현\n\n- Supabase 클라이언트 및 타입 정의 추가\n- 인증, 카테고리, 정책, 학습 콘텐츠 composables 구현\n- 이메일 인증번호\\(OTP\\) 방식 회원가입 구현\n- 로그인/회원가입 페이지 실제 API 연동\n- 카테고리 상세 페이지 실제 데이터 연동\n- Q&A 섹션 추가\n- 데이터베이스 스키마 및 시드 데이터 추가\n- 상세 문서 작성 \\(DB 스키마, 이수율 가이드, 통합 가이드 등\\)\n\n🤖 Generated with Claude Code\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git push:*)",
       "Bash(git commit:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(git reset:*)"
     ]
   }
 }

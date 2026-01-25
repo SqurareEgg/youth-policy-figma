@@ -50,8 +50,8 @@
           <!-- Policy Visit Section -->
           <section>
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-              <q-icon name="menu_book" size="24px" style="background-color: #F97316; color: white; padding: 0.5rem; border-radius: 0.5rem;" />
-              <h2 style="font-size: 1.5rem; font-weight: 700;">정책 방문</h2>
+              <q-icon name="menu_book" size="20px" style="background-color: #F97316; color: white; padding: 0.5rem; border-radius: 0.5rem;" />
+              <h2 style="font-size: 1.25rem; font-weight: 700;">정책 방문</h2>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -64,7 +64,7 @@
                 <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;">
                   <div style="flex: 1;">
                     <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                      <h3 style="font-size: 1.125rem; font-weight: 700;">{{ policy.title }}</h3>
+                      <h3 style="font-size: 1rem; font-weight: 600;">{{ policy.title }}</h3>
                       <q-icon
                         v-if="policy.visited"
                         name="check_circle"
@@ -72,7 +72,7 @@
                         color="green"
                       />
                     </div>
-                    <p style="color: #4B5563; margin-bottom: 0.75rem;">{{ policy.intro }}</p>
+                    <p style="color: #4B5563; margin-bottom: 0.75rem; font-size: 0.875rem;">{{ policy.intro }}</p>
                     <q-badge
                       :color="
                         policy.status === '완료' ? 'green' :
@@ -96,8 +96,8 @@
           <!-- Q&A Section -->
           <section>
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-              <q-icon name="question_answer" size="24px" style="background-color: #F97316; color: white; padding: 0.5rem; border-radius: 0.5rem;" />
-              <h2 style="font-size: 1.5rem; font-weight: 700;">Q&A</h2>
+              <q-icon name="question_answer" size="20px" style="background-color: #F97316; color: white; padding: 0.5rem; border-radius: 0.5rem;" />
+              <h2 style="font-size: 1.25rem; font-weight: 700;">Q&A</h2>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -107,10 +107,10 @@
                 style="padding: 1.5rem;"
               >
                 <div style="display: flex; align-items: flex-start; gap: 1rem;">
-                  <q-icon name="help_outline" size="24px" color="orange" style="flex-shrink: 0; margin-top: 0.25rem;" />
+                  <q-icon name="help_outline" size="20px" color="orange" style="flex-shrink: 0; margin-top: 0.25rem;" />
                   <div style="flex: 1;">
-                    <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.75rem;">{{ qna.question }}</h3>
-                    <p style="color: #4B5563; line-height: 1.6;">{{ qna.answer }}</p>
+                    <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">{{ qna.question }}</h3>
+                    <p style="color: #4B5563; line-height: 1.6; font-size: 0.875rem;">{{ qna.answer }}</p>
                   </div>
                 </div>
               </q-card>
@@ -124,8 +124,8 @@
           <!-- Video Learning Section -->
           <section>
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-              <q-icon name="videocam" size="24px" style="background-color: #F97316; color: white; padding: 0.5rem; border-radius: 0.5rem;" />
-              <h2 style="font-size: 1.5rem; font-weight: 700;">영상 학습</h2>
+              <q-icon name="videocam" size="20px" style="background-color: #F97316; color: white; padding: 0.5rem; border-radius: 0.5rem;" />
+              <h2 style="font-size: 1.25rem; font-weight: 700;">영상 학습</h2>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
@@ -137,9 +137,10 @@
               >
                 <div style="position: relative;">
                   <img
-                    :src="video.thumbnail"
+                    :src="video.thumbnail_url"
                     :alt="video.title"
-                    style="width: 100%; height: 12rem; object-fit: cover;"
+                    style="width: 100%; height: 12rem; object-fit: cover; background-color: #E5E7EB;"
+                    @error="(e) => e.target.src = 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400'"
                   />
                   <div style="position: absolute; inset: 0; background-color: rgba(0, 0, 0, 0.3); display: flex; align-items: center; justify-content: center;">
                     <q-icon name="play_circle" size="48px" color="white" />
@@ -155,13 +156,13 @@
                   />
                 </div>
                 <q-card-section>
-                  <h3 style="font-weight: 700; margin-bottom: 0.5rem;">{{ video.title }}</h3>
+                  <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">{{ video.title }}</h3>
                   <q-btn
                     :label="video.completed ? '다시보기' : '시청하기'"
                     color="orange"
                     unelevated
                     no-caps
-                    style="width: 100%;"
+                    style="width: 100%; font-size: 0.875rem;"
                     @click.stop="() => watchVideo(video.id)"
                   />
                 </q-card-section>
@@ -172,8 +173,8 @@
           <!-- Quiz Section -->
           <section>
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-              <q-icon name="emoji_events" size="24px" style="background-color: #F97316; color: white; padding: 0.5rem; border-radius: 0.5rem;" />
-              <h2 style="font-size: 1.5rem; font-weight: 700;">Quiz</h2>
+              <q-icon name="emoji_events" size="20px" style="background-color: #F97316; color: white; padding: 0.5rem; border-radius: 0.5rem;" />
+              <h2 style="font-size: 1.25rem; font-weight: 700;">Quiz</h2>
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
@@ -183,7 +184,7 @@
                 style="padding: 1.5rem;"
               >
                 <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem;">
-                  <h3 style="font-size: 1.125rem; font-weight: 700; flex: 1;">{{ quiz.title }}</h3>
+                  <h3 style="font-size: 1rem; font-weight: 600; flex: 1;">{{ quiz.title }}</h3>
                   <q-icon
                     v-if="quiz.completed"
                     name="check_circle"
