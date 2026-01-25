@@ -19,7 +19,7 @@
           flat
           no-caps
           :label="category.name"
-          @click="() => handleCategoryClick(category.name)"
+          @click="() => handleCategoryClick(category.slug)"
           :style="{
             color: currentCategory === category.name ? '#F97316' : '#374151',
             fontWeight: currentCategory === category.name ? '600' : '400',
@@ -71,7 +71,7 @@
             no-caps
             align="left"
             :label="category.name"
-            @click="() => handleCategoryClick(category.name)"
+            @click="() => handleCategoryClick(category.slug)"
             :style="{
               color: currentCategory === category.name ? '#F97316' : '#374151',
               fontWeight: currentCategory === category.name ? '600' : '400',
@@ -118,28 +118,28 @@ const router = useRouter()
 const mobileMenuOpen = ref(false)
 
 const categories = [
-  { name: '일자리' },
-  { name: '주거' },
-  { name: '교육' },
-  { name: '금융･복지･문화' },
-  { name: '참여' }
+  { name: '일자리', slug: 'job' },
+  { name: '주거', slug: 'housing' },
+  { name: '교육', slug: 'education' },
+  { name: '금융･복지･문화', slug: 'finance-welfare-culture' },
+  { name: '참여', slug: 'participation' }
 ]
 
-const handleCategoryClick = (categoryName: string) => {
+const handleCategoryClick = (categorySlug: string) => {
   mobileMenuOpen.value = false
-  router.push({ name: 'category', params: { category: categoryName } })
+  router.push({ name: 'category', params: { category: categorySlug } })
 }
 
 const handleLogoClick = () => {
-  router.push('/figma')
+  router.push('/')
 }
 
 const handleLoginClick = () => {
-  router.push({ name: 'figma-login' })
+  router.push({ name: 'login' })
 }
 
 const handleSignupClick = () => {
-  router.push({ name: 'figma-signup' })
+  router.push({ name: 'signup' })
 }
 </script>
 
