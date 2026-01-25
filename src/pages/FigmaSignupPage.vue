@@ -56,13 +56,21 @@
             :rules="[(val) => !!val || '생년월일을 입력해주세요']"
           />
 
-          <q-input
-            v-model="formData.phone"
-            label="전화번호"
-            placeholder="010-1234-5678"
+          <q-select
+            v-model="formData.school"
+            label="학교"
             outlined
-            mask="###-####-####"
-            :rules="[(val) => !!val || '전화번호를 입력해주세요']"
+            :options="schoolOptions"
+            :rules="[(val) => !!val || '학교를 선택해주세요']"
+          />
+
+          <q-input
+            v-model="formData.studentId"
+            label="학번"
+            placeholder="20240001"
+            outlined
+            mask="########"
+            :rules="[(val) => !!val || '학번을 입력해주세요']"
           />
 
           <div style="display: flex; flex-direction: column; gap: 0.5rem;">
@@ -126,13 +134,26 @@ const { signUp } = useAuth()
 
 const loading = ref(false)
 
+const schoolOptions = [
+  '대전보건대학교',
+  '대전과학기술대학교',
+  '한국폴리텍대학 대전캠퍼스',
+  '대전대학교',
+  '목원대학교',
+  '배재대학교',
+  '충남대학교',
+  '한남대학교',
+  'KAIST'
+]
+
 const formData = ref({
   email: '',
   password: '',
   passwordConfirm: '',
   name: '',
   birthdate: '',
-  phone: '',
+  school: '',
+  studentId: '',
   agreeTerms: false,
   agreePrivacy: false,
   agreeMarketing: false
@@ -147,7 +168,8 @@ const handleSignup = async () => {
       formData.value.password,
       formData.value.name,
       formData.value.birthdate,
-      formData.value.phone,
+      formData.value.school,
+      formData.value.studentId,
       {
         terms: formData.value.agreeTerms,
         privacy: formData.value.agreePrivacy,

@@ -36,55 +36,15 @@ export function useAuth() {
     }
   }
 
-  // 이메일 인증번호 발송
-  const sendOtp = async (email: string) => {
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          shouldCreateUser: true,
-          emailRedirectTo: window.location.origin
-        }
-      })
 
-      if (error) throw error
-
-      return { success: true }
-    } catch (error: any) {
-      console.error('인증번호 발송 에러:', error.message)
-      return { success: false, error: error.message }
-    }
-  }
-
-  // 이메일 인증번호 확인
-  const verifyOtp = async (email: string, token: string) => {
-    try {
-      const { data, error } = await supabase.auth.verifyOtp({
-        email,
-        token,
-        type: 'email'
-      })
-
-      if (error) throw error
-      if (!data.user) throw new Error('인증 실패')
-
-      user.value = data.user
-      session.value = data.session
-
-      return { success: true, user: data.user }
-    } catch (error: any) {
-      console.error('인증번호 확인 에러:', error.message)
-      return { success: false, error: error.message }
-    }
-  }
-
-  // 회원가입 (기존 비밀번호 방식 - 레거시)
+  // 회원가입 (이메일/비밀번호 방식)
   const signUp = async (
     email: string,
     password: string,
     name: string,
     birthDate: string,
-    phone: string,
+    school: string,
+    studentId: string,
     agreements: {
       terms: boolean
       privacy: boolean
@@ -107,7 +67,8 @@ export function useAuth() {
         .update({
           name,
           birth_date: birthDate,
-          phone,
+          school,
+          student_id: studentId,
           terms_agreed: agreements.terms,
           privacy_agreed: agreements.privacy,
           marketing_agreed: agreements.marketing
@@ -128,44 +89,6 @@ export function useAuth() {
     }
   }
 
-  // 인증번호 확인 후 프로필 정보 업데이트
-  const completeSignup = async (
-    name: string,
-    birthDate: string,
-    phone: string,
-    agreements: {
-      terms: boolean
-      privacy: boolean
-      marketing: boolean
-    }
-  ) => {
-    if (!user.value) {
-      return { success: false, error: '인증이 필요합니다' }
-    }
-
-    try {
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          name,
-          birth_date: birthDate,
-          phone,
-          terms_agreed: agreements.terms,
-          privacy_agreed: agreements.privacy,
-          marketing_agreed: agreements.marketing
-        })
-        .eq('id', user.value.id)
-
-      if (profileError) throw profileError
-
-      await fetchProfile()
-
-      return { success: true }
-    } catch (error: any) {
-      console.error('프로필 업데이트 에러:', error.message)
-      return { success: false, error: error.message }
-    }
-  }
 
   // 로그아웃
   const signOut = async () => {
@@ -281,10 +204,6 @@ export function useAuth() {
     signOut,
     fetchProfile,
     updateProfile,
-    initializeAuth,
-    // 이메일 인증번호 관련
-    sendOtp,
-    verifyOtp,
-    completeSignup
+    initializeAuth
   }
 }

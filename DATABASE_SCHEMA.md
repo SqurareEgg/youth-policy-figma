@@ -42,7 +42,8 @@
 │  - id (PK, FK)  │
 │  - name         │
 │  - birth_date   │
-│  - phone        │
+│  - school       │
+│  - student_id   │
 └────────┬────────┘
          │
          │ 1:N
@@ -94,7 +95,8 @@
 | email | TEXT | NOT NULL, UNIQUE | 이메일 주소 |
 | name | TEXT | - | 사용자 이름 |
 | birth_date | DATE | - | 생년월일 |
-| phone | TEXT | - | 연락처 |
+| school | TEXT | - | 학교명 |
+| student_id | TEXT | - | 학번 |
 | terms_agreed | BOOLEAN | DEFAULT false | 이용약관 동의 여부 |
 | privacy_agreed | BOOLEAN | DEFAULT false | 개인정보 처리방침 동의 |
 | marketing_agreed | BOOLEAN | DEFAULT false | 마케팅 정보 수신 동의 |
@@ -532,7 +534,8 @@ await supabase
   .update({
     name: '홍길동',
     birth_date: '2000-01-01',
-    phone: '010-1234-5678',
+    school: '대전보건대학교',
+    student_id: '20240001',
     terms_agreed: true,
     privacy_agreed: true
   })
