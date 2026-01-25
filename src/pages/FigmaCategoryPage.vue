@@ -193,19 +193,19 @@
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.875rem; color: #4B5563;">
+                  <div v-if="quiz.questionCount" style="display: flex; align-items: center; justify-content: space-between; font-size: 0.875rem; color: #4B5563;">
                     <span>문항 수</span>
-                    <span style="font-weight: 600;">{{ quiz.questions }}문제</span>
+                    <span style="font-weight: 600;">{{ quiz.questionCount }}문제</span>
                   </div>
 
                   <q-card
-                    v-if="quiz.completed && quiz.score !== null"
+                    v-if="quiz.completed && quiz.bestScore !== null"
                     flat
                     style="background-color: rgba(167, 232, 189, 0.2); padding: 0.75rem;"
                   >
                     <div style="display: flex; align-items: center; justify-content: space-between;">
-                      <span style="font-size: 0.875rem; color: #374151;">점수</span>
-                      <span style="font-size: 1.5rem; font-weight: 700; color: #15803d;">{{ quiz.score }}점</span>
+                      <span style="font-size: 0.875rem; color: #374151;">최고 점수</span>
+                      <span style="font-size: 1.5rem; font-weight: 700; color: #15803d;">{{ quiz.bestScore }}점</span>
                     </div>
                   </q-card>
 
@@ -330,7 +330,12 @@ const watchVideo = (videoId: number) => {
 }
 
 const startQuiz = (quizId: number) => {
-  console.log('Start quiz:', quizId)
-  // TODO: 퀴즈 페이지로 이동
+  router.push({
+    name: 'quiz',
+    params: {
+      category: category.value,
+      quizId: quizId.toString()
+    }
+  })
 }
 </script>

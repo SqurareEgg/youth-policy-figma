@@ -112,6 +112,21 @@ export function useLearning() {
 
       if (fetchError) throw fetchError
 
+      // 각 퀴즈의 문제 개수 가져오기
+      const quizzesWithQuestionCount = await Promise.all(
+        (quizData || []).map(async (quiz) => {
+          const { count } = await supabase
+            .from('quiz_questions')
+            .select('*', { count: 'exact', head: true })
+            .eq('quiz_id', quiz.id)
+
+          return {
+            ...quiz,
+            questionCount: count || 0
+          }
+        })
+      )
+
       // 사용자 최고 점수 가져오기
       if (userId) {
         const { data: resultsData } = await supabase
@@ -128,7 +143,7 @@ export function useLearning() {
         }, {} as Record<number, number>)
 
         // 퀴즈와 결과 정보 병합
-        quizzes.value = (quizData || []).map((quiz) => ({
+        quizzes.value = quizzesWithQuestionCount.map((quiz) => ({
           ...quiz,
           bestScore: bestScores?.[quiz.id] || null,
           completed: (bestScores?.[quiz.id] || 0) >= 60
@@ -137,8 +152,8 @@ export function useLearning() {
         return quizzes.value
       }
 
-      quizzes.value = quizData || []
-      return quizData
+      quizzes.value = quizzesWithQuestionCount as any
+      return quizzesWithQuestionCount
     } catch (err: any) {
       error.value = err.message
       console.error('퀴즈 가져오기 에러:', err.message)
