@@ -72,7 +72,7 @@
                         color="green"
                       />
                     </div>
-                    <p style="color: #4B5563; margin-bottom: 0.75rem;">{{ policy.content.intro }}</p>
+                    <p style="color: #4B5563; margin-bottom: 0.75rem;">{{ policy.intro }}</p>
                     <q-badge
                       :color="
                         policy.status === '완료' ? 'green' :

@@ -31,20 +31,32 @@
 
       <!-- 우측 로그인/회원가입 - Desktop -->
       <div class="gt-sm" style="display: flex; align-items: center; gap: 0.75rem;">
-        <q-btn
-          flat
-          no-caps
-          label="로그인"
-          @click="handleLoginClick"
-          style="color: #374151; font-size: 0.875rem;"
-        />
-        <q-btn
-          unelevated
-          no-caps
-          label="회원가입"
-          @click="handleSignupClick"
-          style="background-color: #F97316; color: white; font-size: 0.875rem; padding: 0.5rem 1rem;"
-        />
+        <template v-if="isAuthenticated">
+          <span style="color: #374151; font-size: 0.875rem;">{{ profile?.name || user?.email }}님</span>
+          <q-btn
+            flat
+            no-caps
+            label="로그아웃"
+            @click="handleLogout"
+            style="color: #374151; font-size: 0.875rem;"
+          />
+        </template>
+        <template v-else>
+          <q-btn
+            flat
+            no-caps
+            label="로그인"
+            @click="handleLoginClick"
+            style="color: #374151; font-size: 0.875rem;"
+          />
+          <q-btn
+            unelevated
+            no-caps
+            label="회원가입"
+            @click="handleSignupClick"
+            style="background-color: #F97316; color: white; font-size: 0.875rem; padding: 0.5rem 1rem;"
+          />
+        </template>
       </div>
 
       <!-- Mobile Menu Button -->
@@ -82,21 +94,36 @@
           />
         </div>
         <!-- 로그인/회원가입 -->
-        <q-btn
-          flat
-          no-caps
-          align="left"
-          label="로그인"
-          @click="handleLoginClick"
-          style="color: #374151; font-size: 0.875rem; justify-content: flex-start; width: 100%;"
-        />
-        <q-btn
-          unelevated
-          no-caps
-          label="회원가입"
-          @click="handleSignupClick"
-          style="background-color: #F97316; color: white; font-size: 0.875rem; width: 100%;"
-        />
+        <template v-if="isAuthenticated">
+          <div style="padding: 0.75rem 0; border-top: 1px solid #E5E7EB;">
+            <p style="color: #374151; font-size: 0.875rem; margin-bottom: 0.5rem;">{{ profile?.name || user?.email }}님</p>
+            <q-btn
+              flat
+              no-caps
+              align="left"
+              label="로그아웃"
+              @click="handleLogout"
+              style="color: #374151; font-size: 0.875rem; justify-content: flex-start; width: 100%;"
+            />
+          </div>
+        </template>
+        <template v-else>
+          <q-btn
+            flat
+            no-caps
+            align="left"
+            label="로그인"
+            @click="handleLoginClick"
+            style="color: #374151; font-size: 0.875rem; justify-content: flex-start; width: 100%;"
+          />
+          <q-btn
+            unelevated
+            no-caps
+            label="회원가입"
+            @click="handleSignupClick"
+            style="background-color: #F97316; color: white; font-size: 0.875rem; width: 100%;"
+          />
+        </template>
       </div>
     </div>
   </header>
@@ -105,6 +132,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
+import { useAuth } from '../../composables/useAuth'
 
 interface Props {
   currentCategory?: string | null
@@ -115,6 +144,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const router = useRouter()
+const $q = useQuasar()
+const { user, profile, isAuthenticated, signOut } = useAuth()
 const mobileMenuOpen = ref(false)
 
 const categories = [
@@ -140,6 +171,25 @@ const handleLoginClick = () => {
 
 const handleSignupClick = () => {
   router.push({ name: 'signup' })
+}
+
+const handleLogout = async () => {
+  const result = await signOut()
+  if (result.success) {
+    $q.notify({
+      type: 'positive',
+      message: '로그아웃되었습니다.',
+      position: 'top'
+    })
+    mobileMenuOpen.value = false
+    router.push('/')
+  } else {
+    $q.notify({
+      type: 'negative',
+      message: '로그아웃에 실패했습니다.',
+      position: 'top'
+    })
+  }
 }
 </script>
 
