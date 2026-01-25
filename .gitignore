@@ -37,3 +37,9 @@ yarn-error.log*
 .env
 .env.local
 .env.production
+
+# Video files (upload to YouTube instead)
+청년정책 최종영상/
+*.mov
+*.mp4
+*.avi

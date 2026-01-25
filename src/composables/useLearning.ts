@@ -43,10 +43,14 @@ export function useLearning() {
           .eq('user_id', userId)
 
         // 영상과 진도 정보 병합
-        videos.value = (videoData || []).map((video) => ({
-          ...video,
-          progress: progressData?.find((p) => p.video_id === video.id)
-        })) as any
+        videos.value = (videoData || []).map((video) => {
+          const progress = progressData?.find((p) => p.video_id === video.id)
+          return {
+            ...video,
+            progress,
+            completed: progress?.completed || false
+          }
+        }) as any
 
         return videos.value
       }

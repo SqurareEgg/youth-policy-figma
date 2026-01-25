@@ -325,8 +325,13 @@ const viewPolicy = (policyId: number) => {
 }
 
 const watchVideo = (videoId: number) => {
-  console.log('Watch video:', videoId)
-  // TODO: 영상 재생 페이지로 이동
+  router.push({
+    name: 'video',
+    params: {
+      category: category.value,
+      videoId: videoId.toString()
+    }
+  })
 }
 
 const startQuiz = (quizId: number) => {
