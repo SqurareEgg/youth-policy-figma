@@ -16,7 +16,7 @@
         <div
           v-for="card in cards"
           :key="card.id"
-          @click="() => handleCardClick(card.category)"
+          @click="() => handleCardClick(card.slug)"
           :style="{ background: card.gradient }"
           class="rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-shadow cursor-pointer relative"
         >
@@ -46,57 +46,38 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useCategories } from '../../composables/useCategories'
 
 const router = useRouter()
+const { categories, fetchCategories } = useCategories()
 
-const cards = [
-  {
-    id: 1,
-    title: '일자리',
-    icon: 'work',
-    description: '청년 취업 지원과 창업 기회를 제공합니다',
-    gradient: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
-    category: '일자리',
-    popular: false
-  },
-  {
-    id: 2,
-    title: '주거',
-    icon: 'home',
-    description: '안정적인 주거 환경을 위한 지원 정책',
-    gradient: 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)',
-    category: '주거',
-    popular: false
-  },
-  {
-    id: 3,
-    title: '교육',
-    icon: 'school',
-    description: '학업과 역량 개발을 위한 다양한 지원',
-    gradient: 'linear-gradient(135deg, #4ADE80 0%, #22C55E 100%)',
-    category: '교육',
-    popular: false
-  },
-  {
-    id: 4,
-    title: '금융･복지･문화',
-    icon: 'account_balance',
-    description: '경제적 지원과 문화생활 혜택',
-    gradient: 'linear-gradient(135deg, #F472B6 0%, #EC4899 100%)',
-    category: '금융･복지･문화',
-    popular: false
-  },
-  {
-    id: 5,
-    title: '참여·권리',
-    icon: 'groups',
-    description: '청년의 목소리를 정책에 반영합니다',
-    gradient: 'linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%)',
-    category: '참여',
-    popular: true
-  }
+const gradients = [
+  'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)',
+  'linear-gradient(135deg, #F97316 0%, #EA580C 100%)',
+  'linear-gradient(135deg, #4ADE80 0%, #22C55E 100%)',
+  'linear-gradient(135deg, #F472B6 0%, #EC4899 100%)',
+  'linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%)'
 ]
+
+const cards = ref<any[]>([])
+
+onMounted(async () => {
+  await fetchCategories()
+
+  // 카테고리 데이터를 카드 형식으로 변환
+  cards.value = categories.value.map((category, index) => ({
+    id: category.id,
+    title: category.name,
+    icon: category.icon,
+    description: category.description || '',
+    gradient: gradients[index % gradients.length],
+    category: category.name,
+    slug: category.slug,
+    popular: category.name === '참여'  // 참여 카테고리를 인기로 설정
+  }))
+})
 
 const handleCardClick = (category: string) => {
   router.push({ name: 'category', params: { category } })

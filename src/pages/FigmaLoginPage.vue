@@ -86,8 +86,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
+import { useAuth } from '../composables/useAuth'
 
 const router = useRouter()
+const $q = useQuasar()
+const { signIn } = useAuth()
 
 const email = ref('')
 const password = ref('')
@@ -96,16 +100,41 @@ const loading = ref(false)
 
 const handleLogin = async () => {
   loading.value = true
-  // TODO: 실제 로그인 로직 구현
-  setTimeout(() => {
+
+  try {
+    const result = await signIn(email.value, password.value)
+
+    if (result.success) {
+      $q.notify({
+        type: 'positive',
+        message: '로그인 성공!',
+        position: 'top'
+      })
+      router.push('/')
+    } else {
+      $q.notify({
+        type: 'negative',
+        message: result.error || '로그인에 실패했습니다.',
+        position: 'top'
+      })
+    }
+  } catch (error: any) {
+    $q.notify({
+      type: 'negative',
+      message: '로그인 중 오류가 발생했습니다.',
+      position: 'top'
+    })
+  } finally {
     loading.value = false
-    router.push('/')
-  }, 1000)
+  }
 }
 
 const handleSocialLogin = (provider: string) => {
-  console.log('Social login:', provider)
-  // TODO: 소셜 로그인 로직 구현
+  $q.notify({
+    type: 'info',
+    message: `${provider} 로그인은 준비 중입니다.`,
+    position: 'top'
+  })
 }
 
 const goToSignup = () => {

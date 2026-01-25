@@ -40,7 +40,13 @@
       </div>
 
       <div class="container" style="padding: 2rem 1rem;">
-        <div style="display: flex; flex-direction: column; gap: 2rem;">
+        <!-- 로딩 중 -->
+        <div v-if="loading" style="text-align: center; padding: 3rem;">
+          <q-spinner size="50px" color="orange" />
+          <p style="margin-top: 1rem; color: #4B5563;">데이터를 불러오는 중...</p>
+        </div>
+
+        <div v-else style="display: flex; flex-direction: column; gap: 2rem;">
           <!-- Policy Visit Section -->
           <section>
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
@@ -84,6 +90,34 @@
                   />
                 </div>
               </q-card>
+            </div>
+          </section>
+
+          <!-- Q&A Section -->
+          <section>
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+              <q-icon name="question_answer" size="24px" style="background-color: #F97316; color: white; padding: 0.5rem; border-radius: 0.5rem;" />
+              <h2 style="font-size: 1.5rem; font-weight: 700;">Q&A</h2>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <q-card
+                v-for="qna in qnaList"
+                :key="qna.id"
+                style="padding: 1.5rem;"
+              >
+                <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                  <q-icon name="help_outline" size="24px" color="orange" style="flex-shrink: 0; margin-top: 0.25rem;" />
+                  <div style="flex: 1;">
+                    <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.75rem;">{{ qna.question }}</h3>
+                    <p style="color: #4B5563; line-height: 1.6;">{{ qna.answer }}</p>
+                  </div>
+                </div>
+              </q-card>
+
+              <div v-if="qnaList.length === 0" style="text-align: center; padding: 2rem; color: #6B7280;">
+                아직 등록된 Q&A가 없습니다.
+              </div>
             </div>
           </section>
 
@@ -196,30 +230,90 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
 import FigmaHeader from '../components/figma/FigmaHeader.vue'
 import FigmaFooter from '../components/figma/FigmaFooter.vue'
-import { categoryPolicies } from '../data/policyData'
-import { getCategoryVideos, getCategoryQuizzes, calculateCompletionRate } from '../data/learningData'
+import { useAuth } from '../composables/useAuth'
+import { useCategories } from '../composables/useCategories'
+import { usePolicies } from '../composables/usePolicies'
+import { useLearning } from '../composables/useLearning'
 
 const route = useRoute()
 const router = useRouter()
+const $q = useQuasar()
+
+const { user } = useAuth()
+const { getCategoryBySlug } = useCategories()
+const { policies, fetchPoliciesByCategory } = usePolicies()
+const {
+  videos,
+  quizzes,
+  qnaList,
+  fetchVideosByCategory,
+  fetchQuizzesByCategory,
+  fetchQnAByCategory,
+  fetchLearningProgress
+} = useLearning()
 
 const category = computed(() => route.params.category as string)
+const categoryData = ref<any>(null)
+const completionRate = ref(0)
+const loading = ref(true)
 
-const policies = computed(() => {
-  const categoryData = categoryPolicies[category.value] || []
-  return categoryData.map((policy) => ({
-    ...policy,
-    visited: Math.random() > 0.5,
-    status: ['완료', '진행중', '미방문'][Math.floor(Math.random() * 3)]
-  }))
+// 카테고리 데이터 가져오기
+const loadCategoryData = async () => {
+  loading.value = true
+
+  try {
+    // 카테고리 정보 가져오기
+    const categoryInfo = await getCategoryBySlug(category.value)
+
+    if (!categoryInfo) {
+      $q.notify({
+        type: 'negative',
+        message: '카테고리를 찾을 수 없습니다.',
+        position: 'top'
+      })
+      router.push('/')
+      return
+    }
+
+    categoryData.value = categoryInfo
+
+    // 정책 가져오기
+    await fetchPoliciesByCategory(category.value)
+
+    // Q&A 가져오기
+    await fetchQnAByCategory(categoryInfo.id)
+
+    // 영상 가져오기
+    await fetchVideosByCategory(categoryInfo.id, user.value?.id)
+
+    // 퀴즈 가져오기
+    await fetchQuizzesByCategory(categoryInfo.id, user.value?.id)
+
+    // 이수율 가져오기 (로그인 시)
+    if (user.value) {
+      const progress = await fetchLearningProgress(user.value.id, categoryInfo.id)
+      completionRate.value = progress?.completion_percentage || 0
+    }
+  } catch (error: any) {
+    console.error('카테고리 데이터 로딩 에러:', error)
+    $q.notify({
+      type: 'negative',
+      message: '데이터를 불러오는 중 오류가 발생했습니다.',
+      position: 'top'
+    })
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  loadCategoryData()
 })
-
-const videos = computed(() => getCategoryVideos(category.value))
-const quizzes = computed(() => getCategoryQuizzes(category.value))
-const completionRate = computed(() => calculateCompletionRate(category.value))
 
 const handleBack = () => {
   router.push('/')
