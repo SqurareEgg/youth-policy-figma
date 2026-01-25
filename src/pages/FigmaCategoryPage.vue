@@ -1,6 +1,6 @@
 <template>
   <div style="min-height: 100vh; background-color: white;">
-    <FigmaHeader :current-category="category" />
+    <FigmaHeader :current-category="categoryData?.name || null" />
 
     <div style="min-height: 100vh; background-color: #F9FAFB;">
       <!-- Back Button & Header -->
@@ -17,8 +17,8 @@
 
           <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
             <div>
-              <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 0.5rem;">{{ category }} 정책</h1>
-              <p style="color: #4B5563;">청년을 위한 {{ category }} 관련 정책을 학습하고 혜택을 받아보세요</p>
+              <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 0.5rem;">{{ categoryData?.name || category }} 정책</h1>
+              <p style="color: #4B5563;">청년을 위한 {{ categoryData?.name || category }} 관련 정책을 학습하고 혜택을 받아보세요</p>
             </div>
 
             <!-- Completion Rate Card -->
@@ -231,7 +231,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import FigmaHeader from '../components/figma/FigmaHeader.vue'
@@ -313,6 +313,11 @@ const loadCategoryData = async () => {
 }
 
 onMounted(() => {
+  loadCategoryData()
+})
+
+// 카테고리 변경 감지
+watch(category, () => {
   loadCategoryData()
 })
 
