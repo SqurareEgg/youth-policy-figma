@@ -111,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import FigmaHeader from '../components/figma/FigmaHeader.vue'
@@ -221,12 +221,24 @@ const initYouTubePlayer = async () => {
     console.log('YouTube Player 초기화:', youtubeVideoId.value)
 
     const playerId = `youtube-player-${videoId.value}`
-    const element = document.getElementById(playerId)
+    let element = document.getElementById(playerId)
+
+    // 엘리먼트가 없으면 짧은 대기 후 재시도 (최대 3회)
+    let retries = 0
+    while (!element && retries < 3) {
+      console.log(`엘리먼트 대기 중... (${retries + 1}/3)`)
+      await new Promise(resolve => setTimeout(resolve, 100))
+      element = document.getElementById(playerId)
+      retries++
+    }
 
     if (!element) {
       console.error('Player 엘리먼트를 찾을 수 없습니다:', playerId)
+      console.error('DOM 상태:', document.body.innerHTML.substring(0, 500))
       throw new Error('Player 엘리먼트를 찾을 수 없습니다.')
     }
+
+    console.log('Player 엘리먼트 찾음:', playerId)
 
     player = new (window as any).YT.Player(playerId, {
       videoId: youtubeVideoId.value,
@@ -351,7 +363,7 @@ const loadVideo = async () => {
         .select('*')
         .eq('user_id', user.value.id)
         .eq('video_id', videoId.value)
-        .single()
+        .maybeSingle() // single() 대신 maybeSingle() 사용 (데이터 없을 때 에러 방지)
 
       if (progressData) {
         isCompleted.value = progressData.completed
@@ -360,7 +372,10 @@ const loadVideo = async () => {
       }
     }
 
-    // YouTube Player 초기화
+    // Vue가 DOM을 업데이트할 때까지 대기
+    await nextTick()
+
+    // YouTube Player 초기화 (DOM 렌더링 후)
     await initYouTubePlayer()
   } catch (error: any) {
     console.error('영상 로딩 에러:', error)
