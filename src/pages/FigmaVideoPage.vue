@@ -420,9 +420,12 @@ const startProgressTracking = () => {
       const duration = player.getDuration() // 전체 길이 (초)
 
       if (duration > 0) {
-        // 진행률 계산 (0-100)
-        watchProgress.value = Math.min((currentTime / duration) * 100, 100)
-        totalWatchTime.value = currentTime
+        // 진행률 계산 (0-100) - 역행하지 않도록 최대값 유지
+        const newProgress = Math.min((currentTime / duration) * 100, 100)
+        watchProgress.value = Math.max(watchProgress.value, newProgress)
+
+        // 시청 시간도 최대값 유지 (뒤로 가도 줄어들지 않음)
+        totalWatchTime.value = Math.max(totalWatchTime.value, currentTime)
 
         // 30초마다 DB에 저장 (5초 × 6회 = 30초)
         if (Math.floor(currentTime) % 30 === 0 && Math.floor(currentTime) !== lastUpdateTime) {
@@ -446,12 +449,13 @@ const saveProgress = async () => {
   if (!user.value || !player) return
 
   try {
-    const currentTime = Math.floor(player.getCurrentTime() || 0)
+    // totalWatchTime은 이미 최대값을 유지하므로 역행하지 않음
+    const timeToSave = Math.floor(totalWatchTime.value)
 
     await updateVideoProgress(
       user.value.id,
       videoId.value,
-      currentTime,
+      timeToSave,
       isCompleted.value
     )
   } catch (error) {
@@ -465,12 +469,13 @@ const markAsCompleted = async () => {
   if (isCompleted.value) return // 이미 완료된 경우
 
   try {
-    const currentTime = player ? Math.floor(player.getCurrentTime() || 0) : totalWatchTime.value
+    // totalWatchTime은 최대 시청 위치를 유지
+    const timeToSave = Math.floor(totalWatchTime.value)
 
     const result = await updateVideoProgress(
       user.value.id,
       videoId.value,
-      currentTime, // 현재 재생 위치 저장
+      timeToSave, // 최대 시청 위치 저장
       true // completed
     )
 

@@ -231,7 +231,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onActivated, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import FigmaHeader from '../components/figma/FigmaHeader.vue'
@@ -313,6 +313,12 @@ const loadCategoryData = async () => {
 }
 
 onMounted(() => {
+  loadCategoryData()
+})
+
+// 영상/퀴즈에서 돌아왔을 때 데이터 재로드
+onActivated(() => {
+  console.log('카테고리 페이지 활성화 - 데이터 재로드')
   loadCategoryData()
 })
 
