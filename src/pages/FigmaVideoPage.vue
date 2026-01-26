@@ -39,14 +39,10 @@
         <div v-else-if="video" style="display: flex; flex-direction: column; gap: 2rem;">
           <!-- YouTube Player -->
           <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 0.5rem; background-color: black;">
-            <iframe
+            <div
               :id="'youtube-player-' + videoId"
-              :src="youtubeEmbedUrl"
               style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
+            ></div>
           </div>
 
           <!-- 진행률 -->
@@ -56,6 +52,11 @@
               <span style="color: #F97316; font-weight: 600;">{{ Math.round(watchProgress) }}%</span>
             </div>
             <q-linear-progress :value="watchProgress / 100" color="orange" size="8px" />
+
+            <div v-if="player" style="margin-top: 0.5rem; font-size: 0.875rem; color: #6B7280;">
+              시청 시간: {{ formatTime(totalWatchTime) }} / {{ video.duration }}
+            </div>
+
             <p v-if="!isCompleted && watchProgress >= 80" style="margin-top: 0.5rem; font-size: 0.875rem; color: #15803d;">
               80% 이상 시청하면 완료로 표시됩니다!
             </p>
@@ -136,8 +137,11 @@ const marking = ref(false)
 
 const watchProgress = ref(0)
 const isCompleted = ref(false)
+const totalWatchTime = ref(0) // 총 시청 시간 (초)
 
 let progressInterval: any = null
+let player: any = null
+let lastUpdateTime = 0
 
 // YouTube URL 파싱
 const getYouTubeVideoId = (url: string) => {
@@ -146,11 +150,81 @@ const getYouTubeVideoId = (url: string) => {
   return match && match[2].length === 11 ? match[2] : null
 }
 
-const youtubeEmbedUrl = computed(() => {
+const youtubeVideoId = computed(() => {
   if (!video.value?.video_url) return ''
-  const videoId = getYouTubeVideoId(video.value.video_url)
-  return `https://www.youtube.com/embed/${videoId}?enablejsapi=1&rel=0`
+  return getYouTubeVideoId(video.value.video_url) || ''
 })
+
+// 초를 MM:SS 형식으로 변환
+const formatTime = (seconds: number) => {
+  const mins = Math.floor(seconds / 60)
+  const secs = Math.floor(seconds % 60)
+  return `${mins}:${secs.toString().padStart(2, '0')}`
+}
+
+// YouTube IFrame API 로드
+const loadYouTubeAPI = () => {
+  return new Promise((resolve) => {
+    if ((window as any).YT && (window as any).YT.Player) {
+      resolve(true)
+      return
+    }
+
+    const tag = document.createElement('script')
+    tag.src = 'https://www.youtube.com/iframe_api'
+    const firstScriptTag = document.getElementsByTagName('script')[0]
+    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
+
+    ;(window as any).onYouTubeIframeAPIReady = () => {
+      resolve(true)
+    }
+  })
+}
+
+// YouTube Player 초기화
+const initYouTubePlayer = async () => {
+  await loadYouTubeAPI()
+
+  player = new (window as any).YT.Player(`youtube-player-${videoId.value}`, {
+    videoId: youtubeVideoId.value,
+    playerVars: {
+      autoplay: 0,
+      rel: 0,
+      modestbranding: 1
+    },
+    events: {
+      onReady: onPlayerReady,
+      onStateChange: onPlayerStateChange
+    }
+  })
+}
+
+// Player 준비 완료
+const onPlayerReady = (event: any) => {
+  console.log('YouTube Player 준비 완료')
+  // 이전 시청 위치가 있으면 그 위치로 이동
+  if (lastUpdateTime > 0) {
+    event.target.seekTo(lastUpdateTime, true)
+  }
+}
+
+// Player 상태 변경
+const onPlayerStateChange = (event: any) => {
+  const YT = (window as any).YT
+
+  if (event.data === YT.PlayerState.PLAYING) {
+    // 재생 중일 때만 진행률 추적 시작
+    startProgressTracking()
+  } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+    // 일시정지 또는 종료 시 진행률 저장
+    saveProgress()
+
+    if (event.data === YT.PlayerState.ENDED) {
+      // 영상 종료 시 자동 완료
+      markAsCompleted()
+    }
+  }
+}
 
 // 영상 데이터 로드
 const loadVideo = async () => {
@@ -186,13 +260,13 @@ const loadVideo = async () => {
 
       if (progressData) {
         isCompleted.value = progressData.completed
-        // last_position은 초 단위, 대략적인 진행률로 변환
-        watchProgress.value = progressData.completed ? 100 : 0
+        lastUpdateTime = progressData.last_position || 0
+        totalWatchTime.value = progressData.last_position || 0
       }
-
-      // 진행률 자동 업데이트 시작 (30초마다)
-      startProgressTracking()
     }
+
+    // YouTube Player 초기화
+    await initYouTubePlayer()
   } catch (error: any) {
     console.error('영상 로딩 에러:', error)
     $q.notify({
@@ -208,20 +282,59 @@ const loadVideo = async () => {
 
 // 진행률 추적 시작
 const startProgressTracking = () => {
-  if (!user.value) return
+  if (!user.value || !player) return
 
-  // 30초마다 진행률 업데이트
+  // 기존 interval 제거
+  if (progressInterval) {
+    clearInterval(progressInterval)
+  }
+
+  // 5초마다 진행률 업데이트
   progressInterval = setInterval(async () => {
-    if (watchProgress.value < 100 && !isCompleted.value) {
-      // 시청 중이면 진행률 증가 (간단한 시뮬레이션)
-      watchProgress.value = Math.min(watchProgress.value + 5, 100)
+    if (!player || !player.getCurrentTime || isCompleted.value) return
 
-      // 80% 이상 시청하면 완료로 표시
-      if (watchProgress.value >= 80 && !isCompleted.value) {
-        await markAsCompleted()
+    try {
+      const currentTime = player.getCurrentTime() // 현재 재생 위치 (초)
+      const duration = player.getDuration() // 전체 길이 (초)
+
+      if (duration > 0) {
+        // 진행률 계산 (0-100)
+        watchProgress.value = Math.min((currentTime / duration) * 100, 100)
+        totalWatchTime.value = currentTime
+
+        // 30초마다 DB에 저장 (5초 × 6회 = 30초)
+        if (Math.floor(currentTime) % 30 === 0 && Math.floor(currentTime) !== lastUpdateTime) {
+          lastUpdateTime = Math.floor(currentTime)
+          await saveProgress()
+        }
+
+        // 80% 이상 시청하면 완료로 표시
+        if (watchProgress.value >= 80 && !isCompleted.value) {
+          await markAsCompleted()
+        }
       }
+    } catch (error) {
+      console.error('진행률 추적 에러:', error)
     }
-  }, 30000) // 30초
+  }, 5000) // 5초마다
+}
+
+// 진행률 저장
+const saveProgress = async () => {
+  if (!user.value || !player) return
+
+  try {
+    const currentTime = Math.floor(player.getCurrentTime() || 0)
+
+    await updateVideoProgress(
+      user.value.id,
+      videoId.value,
+      currentTime,
+      isCompleted.value
+    )
+  } catch (error) {
+    console.error('진행률 저장 에러:', error)
+  }
 }
 
 // 완료로 표시
@@ -236,13 +349,17 @@ const markAsCompleted = async () => {
     return
   }
 
+  if (isCompleted.value) return // 이미 완료된 경우
+
   marking.value = true
 
   try {
+    const currentTime = player ? Math.floor(player.getCurrentTime() || 0) : totalWatchTime.value
+
     const result = await updateVideoProgress(
       user.value.id,
       videoId.value,
-      0, // last_position (초 단위, 여기서는 0으로 설정)
+      currentTime, // 현재 재생 위치 저장
       true // completed
     )
 
@@ -255,6 +372,12 @@ const markAsCompleted = async () => {
         message: '영상 시청이 완료되었습니다! 🎉',
         position: 'top'
       })
+
+      // 완료 시 interval 정지
+      if (progressInterval) {
+        clearInterval(progressInterval)
+        progressInterval = null
+      }
     }
   } catch (error: any) {
     console.error('완료 표시 에러:', error)
@@ -282,8 +405,21 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  // interval 정리
   if (progressInterval) {
     clearInterval(progressInterval)
+    progressInterval = null
+  }
+
+  // 마지막 진행률 저장
+  if (player && user.value && !isCompleted.value) {
+    saveProgress()
+  }
+
+  // player 정리
+  if (player && player.destroy) {
+    player.destroy()
+    player = null
   }
 })
 </script>
