@@ -372,6 +372,9 @@ const loadVideo = async () => {
       }
     }
 
+    // 로딩 완료 - 이제 비디오 플레이어 영역이 렌더링됨
+    loading.value = false
+
     // Vue가 DOM을 업데이트할 때까지 대기
     await nextTick()
 
@@ -395,9 +398,9 @@ const loadVideo = async () => {
       timeout: 5000,
       html: true
     })
-    router.back()
-  } finally {
+
     loading.value = false
+    router.back()
   }
 }
 
