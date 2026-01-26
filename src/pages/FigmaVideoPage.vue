@@ -18,9 +18,9 @@
           <div v-if="video">
             <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 0.5rem;">{{ video.title }}</h1>
             <div style="display: flex; align-items: center; gap: 1rem; color: #4B5563;">
-              <div style="display: flex; align-items: center; gap: 0.25rem;">
+              <div v-if="actualDuration > 0" style="display: flex; align-items: center; gap: 0.25rem;">
                 <q-icon name="schedule" size="18px" />
-                <span style="font-size: 0.875rem;">{{ video.duration }}</span>
+                <span style="font-size: 0.875rem;">{{ formatTime(actualDuration) }}</span>
               </div>
               <q-badge v-if="isCompleted" color="green" label="완료" />
             </div>
@@ -53,8 +53,8 @@
             </div>
             <q-linear-progress :value="watchProgress / 100" color="orange" size="8px" />
 
-            <div v-if="player" style="margin-top: 0.5rem; font-size: 0.875rem; color: #6B7280;">
-              시청 시간: {{ formatTime(totalWatchTime) }} / {{ video.duration }}
+            <div v-if="player && actualDuration > 0" style="margin-top: 0.5rem; font-size: 0.875rem; color: #6B7280;">
+              시청 시간: {{ formatTime(totalWatchTime) }} / {{ formatTime(actualDuration) }}
             </div>
 
             <p v-if="!isCompleted && watchProgress >= 80" style="margin-top: 0.5rem; font-size: 0.875rem; color: #15803d;">
@@ -83,17 +83,7 @@
               color="grey"
               no-caps
               @click="handleBack"
-              style="flex: 1; padding: 0.75rem; font-size: 1rem;"
-            />
-            <q-btn
-              v-if="!isCompleted && user"
-              label="완료로 표시"
-              color="orange"
-              unelevated
-              no-caps
-              @click="markAsCompleted"
-              :loading="marking"
-              style="flex: 1; padding: 0.75rem; font-size: 1rem;"
+              style="width: 100%; padding: 0.75rem; font-size: 1rem;"
             />
           </div>
         </div>
@@ -133,11 +123,11 @@ const categorySlug = computed(() => route.params.category as string)
 const video = ref<any>(null)
 const categoryName = ref<string>('')
 const loading = ref(true)
-const marking = ref(false)
 
 const watchProgress = ref(0)
 const isCompleted = ref(false)
 const totalWatchTime = ref(0) // 총 시청 시간 (초)
+const actualDuration = ref(0) // YouTube에서 가져온 실제 영상 길이 (초)
 
 let progressInterval: any = null
 let player: any = null
@@ -264,6 +254,14 @@ const initYouTubePlayer = async () => {
 // Player 준비 완료
 const onPlayerReady = (event: any) => {
   console.log('YouTube Player 준비 완료')
+
+  // 실제 영상 길이 가져오기
+  const duration = event.target.getDuration()
+  if (duration > 0) {
+    actualDuration.value = duration
+    console.log('실제 영상 길이:', formatTime(duration))
+  }
+
   // 이전 시청 위치가 있으면 그 위치로 이동
   if (lastUpdateTime > 0) {
     event.target.seekTo(lastUpdateTime, true)
@@ -461,21 +459,10 @@ const saveProgress = async () => {
   }
 }
 
-// 완료로 표시
+// 완료로 표시 (80% 이상 시청 시 자동 호출)
 const markAsCompleted = async () => {
-  if (!user.value) {
-    $q.notify({
-      type: 'warning',
-      message: '로그인이 필요합니다.',
-      position: 'top'
-    })
-    router.push({ name: 'login' })
-    return
-  }
-
+  if (!user.value) return
   if (isCompleted.value) return // 이미 완료된 경우
-
-  marking.value = true
 
   try {
     const currentTime = player ? Math.floor(player.getCurrentTime() || 0) : totalWatchTime.value
@@ -505,13 +492,6 @@ const markAsCompleted = async () => {
     }
   } catch (error: any) {
     console.error('완료 표시 에러:', error)
-    $q.notify({
-      type: 'negative',
-      message: '완료 표시 중 오류가 발생했습니다.',
-      position: 'top'
-    })
-  } finally {
-    marking.value = false
   }
 }
 
