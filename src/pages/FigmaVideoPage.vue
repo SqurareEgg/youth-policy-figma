@@ -164,17 +164,42 @@ const formatTime = (seconds: number) => {
 
 // YouTube IFrame API 로드
 const loadYouTubeAPI = () => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    // 이미 로드되어 있으면 바로 resolve
     if ((window as any).YT && (window as any).YT.Player) {
       resolve(true)
       return
     }
 
+    // API 로드 중이면 대기
+    if ((window as any).YT) {
+      const checkInterval = setInterval(() => {
+        if ((window as any).YT.Player) {
+          clearInterval(checkInterval)
+          resolve(true)
+        }
+      }, 100)
+
+      setTimeout(() => {
+        clearInterval(checkInterval)
+        reject(new Error('YouTube API 로드 시간 초과'))
+      }, 10000)
+      return
+    }
+
+    // 스크립트 추가
     const tag = document.createElement('script')
     tag.src = 'https://www.youtube.com/iframe_api'
-    const firstScriptTag = document.getElementsByTagName('script')[0]
-    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
+    tag.onerror = () => reject(new Error('YouTube API 로드 실패'))
 
+    const firstScriptTag = document.getElementsByTagName('script')[0]
+    if (firstScriptTag && firstScriptTag.parentNode) {
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+    } else {
+      document.head.appendChild(tag)
+    }
+
+    // 전역 콜백 설정
     ;(window as any).onYouTubeIframeAPIReady = () => {
       resolve(true)
     }
@@ -183,20 +208,45 @@ const loadYouTubeAPI = () => {
 
 // YouTube Player 초기화
 const initYouTubePlayer = async () => {
-  await loadYouTubeAPI()
+  try {
+    console.log('YouTube API 로드 시작...')
+    await loadYouTubeAPI()
+    console.log('YouTube API 로드 완료')
 
-  player = new (window as any).YT.Player(`youtube-player-${videoId.value}`, {
-    videoId: youtubeVideoId.value,
-    playerVars: {
-      autoplay: 0,
-      rel: 0,
-      modestbranding: 1
-    },
-    events: {
-      onReady: onPlayerReady,
-      onStateChange: onPlayerStateChange
+    if (!youtubeVideoId.value) {
+      console.error('YouTube Video ID가 없습니다:', video.value?.video_url)
+      throw new Error('올바른 YouTube URL이 아닙니다.')
     }
-  })
+
+    console.log('YouTube Player 초기화:', youtubeVideoId.value)
+
+    const playerId = `youtube-player-${videoId.value}`
+    const element = document.getElementById(playerId)
+
+    if (!element) {
+      console.error('Player 엘리먼트를 찾을 수 없습니다:', playerId)
+      throw new Error('Player 엘리먼트를 찾을 수 없습니다.')
+    }
+
+    player = new (window as any).YT.Player(playerId, {
+      videoId: youtubeVideoId.value,
+      playerVars: {
+        autoplay: 0,
+        rel: 0,
+        modestbranding: 1
+      },
+      events: {
+        onReady: onPlayerReady,
+        onStateChange: onPlayerStateChange,
+        onError: onPlayerError
+      }
+    })
+
+    console.log('YouTube Player 초기화 완료')
+  } catch (error) {
+    console.error('YouTube Player 초기화 에러:', error)
+    throw error
+  }
 }
 
 // Player 준비 완료
@@ -226,6 +276,34 @@ const onPlayerStateChange = (event: any) => {
   }
 }
 
+// Player 에러 처리
+const onPlayerError = (event: any) => {
+  console.error('YouTube Player 에러:', event.data)
+  let errorMessage = '영상 재생 중 오류가 발생했습니다.'
+
+  switch (event.data) {
+    case 2:
+      errorMessage = '잘못된 YouTube 동영상 ID입니다.'
+      break
+    case 5:
+      errorMessage = 'HTML5 플레이어 오류가 발생했습니다.'
+      break
+    case 100:
+      errorMessage = '동영상을 찾을 수 없습니다.'
+      break
+    case 101:
+    case 150:
+      errorMessage = '동영상 소유자가 삽입을 허용하지 않았습니다.'
+      break
+  }
+
+  $q.notify({
+    type: 'negative',
+    message: errorMessage,
+    position: 'top'
+  })
+}
+
 // 영상 데이터 로드
 const loadVideo = async () => {
   loading.value = true
@@ -249,6 +327,23 @@ const loadVideo = async () => {
     video.value = videoData
     categoryName.value = videoData.categories.name
 
+    // video_url 검증
+    if (!videoData.video_url) {
+      throw new Error('영상 URL이 설정되지 않았습니다. 관리자에게 문의하세요.')
+    }
+
+    // YouTube Video ID 검증
+    const extractedVideoId = getYouTubeVideoId(videoData.video_url)
+    if (!extractedVideoId) {
+      throw new Error('올바른 YouTube URL이 아닙니다. 관리자에게 문의하세요.')
+    }
+
+    console.log('영상 정보:', {
+      title: videoData.title,
+      url: videoData.video_url,
+      youtubeId: extractedVideoId
+    })
+
     // 사용자의 시청 기록 가져오기
     if (user.value) {
       const { data: progressData } = await supabase
@@ -269,10 +364,21 @@ const loadVideo = async () => {
     await initYouTubePlayer()
   } catch (error: any) {
     console.error('영상 로딩 에러:', error)
+
+    let errorMessage = error.message || '영상을 불러오는 중 오류가 발생했습니다.'
+
+    // 추가 힌트 제공
+    if (errorMessage.includes('URL이 설정되지 않았습니다') ||
+        errorMessage.includes('올바른 YouTube URL이 아닙니다')) {
+      errorMessage += '\n\n💡 데이터베이스에 영상 URL을 설정해야 합니다. DATABASE_SETUP_STEPS.md를 참고하세요.'
+    }
+
     $q.notify({
       type: 'negative',
-      message: error.message || '영상을 불러오는 중 오류가 발생했습니다.',
-      position: 'top'
+      message: errorMessage,
+      position: 'top',
+      timeout: 5000,
+      html: true
     })
     router.back()
   } finally {
