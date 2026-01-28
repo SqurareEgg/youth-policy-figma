@@ -41,19 +41,6 @@
           />
         </q-form>
 
-        <!-- 소셜 로그인 -->
-        <div style="margin-top: 1.5rem;">
-          <q-separator />
-          <div style="text-align: center; margin: 1rem 0; color: #6B7280; font-size: 0.875rem;">
-            또는
-          </div>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-            <q-btn outline no-caps label="카카오" @click="handleSocialLogin('kakao')" />
-            <q-btn outline no-caps label="네이버" @click="handleSocialLogin('naver')" />
-          </div>
-        </div>
-
         <!-- 회원가입 링크 -->
         <div style="margin-top: 1.5rem; text-align: center; font-size: 0.875rem;">
           <span style="color: #4B5563;">아직 회원이 아니신가요?</span>
@@ -129,13 +116,6 @@ const handleLogin = async () => {
   }
 }
 
-const handleSocialLogin = (provider: string) => {
-  $q.notify({
-    type: 'info',
-    message: `${provider} 로그인은 준비 중입니다.`,
-    position: 'top'
-  })
-}
 
 const goToSignup = () => {
   router.push({ name: 'signup' })
