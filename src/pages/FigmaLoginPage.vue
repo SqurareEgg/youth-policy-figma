@@ -26,9 +26,8 @@
             :rules="[(val) => !!val || '비밀번호를 입력해주세요']"
           />
 
-          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.875rem;">
+          <div style="display: flex; align-items: center; font-size: 0.875rem;">
             <q-checkbox v-model="rememberMe" label="로그인 상태 유지" />
-            <a href="#" style="color: #F97316; text-decoration: none;">비밀번호 찾기</a>
           </div>
 
           <q-btn
