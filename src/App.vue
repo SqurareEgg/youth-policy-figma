@@ -2,14 +2,15 @@
   <router-view />
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useAuth } from './composables/useAuth'
 
-export default defineComponent({
-  name: 'App',
+const { initializeAuth } = useAuth()
 
-  mounted() {
-    console.log('🚀 [App] 애플리케이션 마운트 완료')
-  }
+onMounted(async () => {
+  console.log('🚀 [App] 애플리케이션 마운트 완료')
+  await initializeAuth()
+  console.log('✅ [App] 세션 초기화 완료')
 })
 </script>

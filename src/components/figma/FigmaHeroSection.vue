@@ -1,34 +1,37 @@
 <template>
-  <section style="background-color: white; padding: 2rem 0;">
-    <div class="container">
-      <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center;">
-        <!-- Left Content -->
-        <div style="order: 1;">
-          <h1 style="font-size: 2rem; font-weight: 700; margin-bottom: 2rem; line-height: 1.25;">
-            대전 청년에게 꼭 필요한<br />
-            모든 혜택, 청년있슈
+  <section class="bg-white py-12 sm:py-16 lg:py-20 border-b border-gray-100">
+    <div class="container mx-auto px-4 sm:px-6">
+      <div class="hero-grid">
+        <!-- 텍스트 콘텐츠 (데스크탑: 왼쪽, 모바일: 위) -->
+        <div class="order-first">
+          <h1>
+            대전 청년에게 꼭 필요한<br>모든 혜택, 청년있슈
           </h1>
 
-          <div class="gt-sm" style="display: flex; flex-wrap: wrap; gap: 1rem;">
-            <div style="display: flex; align-items: center; gap: 0.5rem; background-color: white; border: 1px solid #E5E7EB; padding: 0.5rem 1rem; border-radius: 9999px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
-              <q-icon name="auto_awesome" size="20px" color="orange" />
-              <span style="font-size: 0.875rem; font-weight: 500; color: #374151;">19~39세 청년 맞춤 정보</span>
-            </div>
+          <div class="hero-content">
+            <p class="hero-description">
+              19세부터 39세까지, 대전에 거주하는 청년이라면 누구나 신청할 수 있는 중앙정부와 지자체 정책을 한곳에 모았습니다.
+            </p>
 
-            <div style="display: flex; align-items: center; gap: 0.5rem; background-color: white; border: 1px solid #E5E7EB; padding: 0.5rem 1rem; border-radius: 9999px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
-              <q-icon name="workspace_premium" size="20px" color="green" />
-              <span style="font-size: 0.875rem; font-weight: 500; color: #374151;">중앙·지자체 정책 통합 검색</span>
-            </div>
-
-            <div style="display: flex; align-items: center; gap: 0.5rem; background-color: white; border: 1px solid #E5E7EB; padding: 0.5rem 1rem; border-radius: 9999px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
-              <q-icon name="workspace_premium" size="20px" color="blue" />
-              <span style="font-size: 0.875rem; font-weight: 500; color: #374151;">실시간 혜택 알림 서비스</span>
+            <div class="hero-bullets">
+              <div class="bullet-item">
+                <span class="text-primary bullet-dot">•</span>
+                <span class="bullet-text">일자리, 주거, 교육, 복지, 참여까지 분야별 정책 안내</span>
+              </div>
+              <div class="bullet-item">
+                <span class="text-primary bullet-dot">•</span>
+                <span class="bullet-text">본인에게 맞는 정책을 쉽게 찾고 학습할 수 있는 시스템</span>
+              </div>
+              <div class="bullet-item">
+                <span class="text-primary bullet-dot">•</span>
+                <span class="bullet-text">정책 변경사항과 신규 혜택 실시간 업데이트</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Right Carousel -->
-        <div style="order: 2;">
+        <!-- 캐러셀 (데스크탑: 오른쪽, 모바일: 아래) -->
+        <div class="order-last">
           <q-carousel
             v-model="slide"
             animated
@@ -90,7 +93,92 @@ const newsSlides = [
   color: #F97316;
 }
 
-.text-secondary {
-  color: #A7E8BD;
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-grid {
+    gap: 4rem;
+  }
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  line-height: 1.25;
+}
+
+@media (min-width: 640px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 2.5rem;
+  }
+}
+
+.hero-content {
+  margin-bottom: 2rem;
+}
+
+.hero-description {
+  font-size: 1rem;
+  color: #374151;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .hero-description {
+    font-size: 1.125rem;
+  }
+}
+
+.hero-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1rem;
+}
+
+.bullet-item {
+  display: flex;
+  align-items: start;
+  gap: 0.75rem;
+}
+
+.bullet-dot {
+  margin-top: 0.25rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.bullet-text {
+  line-height: 1.75;
+  color: #4B5563;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .bullet-text {
+    font-size: 1rem;
+  }
 }
 </style>

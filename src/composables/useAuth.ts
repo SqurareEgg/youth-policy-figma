@@ -1,4 +1,4 @@
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { supabase } from '../lib/supabase'
 import type { User, Session } from '@supabase/supabase-js'
 import type { Database } from '../types/supabase'
@@ -185,13 +185,6 @@ export function useAuth() {
       loading.value = false
     }
   }
-
-  // 컴포넌트 마운트 시 자동 초기화
-  onMounted(() => {
-    if (!user.value && !loading.value) {
-      initializeAuth()
-    }
-  })
 
   return {
     user,
