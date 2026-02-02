@@ -41,6 +41,7 @@
                   v-for="subPolicy in subPolicies"
                   :key="subPolicy.id"
                   class="sidebar-button"
+                  @click="viewPolicy(subPolicy.id)"
                 >
                   <span style="font-size: 0.875rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ subPolicy.title }}</span>
                 </button>
@@ -57,6 +58,7 @@
                   v-for="(subPolicy, index) in subPolicies"
                   :key="subPolicy.id"
                   class="mobile-tab-button"
+                  @click="viewPolicy(subPolicy.id)"
                 >
                   <q-icon :name="subPolicy.icon" size="24px" />
                   <span style="font-size: 0.75rem; text-align: center; line-height: 1.25;">정책{{ index + 1 }}</span>
@@ -82,6 +84,7 @@
                       v-for="(subPolicy, index) in subPolicies"
                       :key="subPolicy.id"
                       class="policy-card"
+                      @click="viewPolicy(subPolicy.id)"
                     >
                       <div class="policy-card-content">
                         <span class="policy-number">{{ String(index + 1).padStart(2, '0') }}</span>
@@ -417,8 +420,13 @@ const handleBack = () => {
 }
 
 const viewPolicy = (policyId: number) => {
-  console.log('View policy:', policyId)
-  // TODO: 정책 상세 페이지로 이동
+  router.push({
+    name: 'policy-detail',
+    params: {
+      category: category.value,
+      policyId: policyId.toString()
+    }
+  })
 }
 
 const watchVideo = (videoId: number) => {
