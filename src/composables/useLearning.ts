@@ -82,6 +82,8 @@ export function useLearning() {
           last_position: lastPosition,
           completed: completed,
           completed_at: completed ? new Date().toISOString() : null
+        }, {
+          onConflict: 'user_id,video_id'
         })
 
       if (upsertError) throw upsertError
