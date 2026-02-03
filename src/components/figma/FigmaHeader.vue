@@ -75,8 +75,12 @@
           flat
           dense
           round
-          icon="menu"
+          :icon="mobileMenuOpen ? 'close' : 'menu'"
           @click="mobileMenuOpen = !mobileMenuOpen"
+          :style="{
+            backgroundColor: mobileMenuOpen ? '#FFF7ED' : 'transparent',
+            color: mobileMenuOpen ? '#F97316' : '#374151'
+          }"
         />
       </div>
     </div>
