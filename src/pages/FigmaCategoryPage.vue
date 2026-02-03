@@ -1,6 +1,6 @@
 <template>
   <div style="min-height: 100vh; background-color: white;">
-    <FigmaHeader :current-category="categoryData?.name || null" />
+    <FigmaHeader :current-category="categoryName" />
 
     <div style="min-height: 100vh; background-color: #F9FAFB;">
       <!-- Back Button & Header -->
@@ -17,8 +17,8 @@
           />
 
           <div>
-            <h1 class="page-title">{{ categoryData?.name || category }} 정책</h1>
-            <p class="page-description">청년을 위한 {{ categoryData?.name || category }} 관련 정책을 학습하고 혜택을 받아보세요</p>
+            <h1 class="page-title">{{ categoryName }} 정책</h1>
+            <p class="page-description">청년을 위한 {{ categoryName }} 관련 정책을 학습하고 혜택을 받아보세요</p>
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@
                 <section class="learning-progress-section">
                   <div class="learning-progress-header">
                     <div>
-                      <h3 class="learning-progress-title">{{ categoryData?.name || category }} 정책 학습 현황</h3>
+                      <h3 class="learning-progress-title">{{ categoryName }} 정책 학습 현황</h3>
                     </div>
                     <div class="learning-progress-percentage">
                       <span class="learning-progress-number">{{ Math.round(completionRate) }}</span>
@@ -238,6 +238,18 @@ const category = computed(() => route.params.category as string)
 const categoryData = ref<any>(null)
 const completionRate = ref(0)
 const loading = ref(true)
+
+// 카테고리 슬러그 → 이름 매핑
+const categoryNameMap: Record<string, string> = {
+  'job': '일자리',
+  'housing': '주거',
+  'education': '교육',
+  'finance-welfare-culture': '금융･복지･문화',
+  'participation': '참여'
+}
+
+// 카테고리 이름 가져오기 (데이터 로드 전에도 표시)
+const categoryName = computed(() => categoryData.value?.name || categoryNameMap[category.value] || category.value)
 
 // 카테고리별 소개 정보
 const categoryIntro = computed(() => {
