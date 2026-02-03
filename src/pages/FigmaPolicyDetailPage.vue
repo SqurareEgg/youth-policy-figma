@@ -307,6 +307,169 @@ const policyDetails = computed(() => {
           { id: 4, title: '창업 안전망 및 재도전', description: '실패 경험을 자산으로 삼을 수 있도록 \'청년 재도전 지원 전용 트랙\'을 신설하고 사업화 자금을 패키지로 지원합니다. 폐업 후 재창업을 준비하는 예비 창업자에게는 지원 사업 기회를 추가로 허용하며, 중장년과의 공동 창업 지원도 확대합니다.', saved: false }
         ]
       }
+    },
+    'education': {
+      1: {
+        details: [
+          { id: 1, title: 'AI·SW 중심 교육체계 전환', description: '학생, 구직자, 재직자의 생애주기별 맞춤형 교육훈련 체계를 AI와 SW 중심으로 전면 개편하여 향후 5년간 200만 명에게 역량 개발을 지원합니다.', saved: false },
+          { id: 2, title: 'AI 고등교육 인프라 확충', description: 'AI·SW 중심대학과 AI·AX 대학원을 신설·확대하고 거점 국립대 등에 AI 단과대를 설치하여 전문 교육 및 연구 인프라를 강화합니다.', saved: false },
+          { id: 3, title: '산학연계 실전 교육 강화', description: '대학과 기업이 공동으로 첨단산업 부트캠프를 88개교까지 확대 운영하여 산업 현장 수요에 맞춘 실전형 인재를 양성합니다.', saved: false },
+          { id: 4, title: 'AI 고급인재 발굴·육성', description: 'AI 활용 루키 대회 신설을 통해 우수 인재를 조기에 발굴하고 전문가 멘토링과 심화 교육을 거쳐 디지털 분야 핵심 리더로 육성합니다.', saved: false },
+          { id: 5, title: '군 장병 AI 교육 확대', description: '군 장병 대상 맞춤형 AI·SW 온라인 교육을 50만 명으로 대폭 확대하고 대학 원격강좌 학점 인정 등을 통해 복무 중 자기개발을 지원합니다.', saved: false }
+        ]
+      },
+      2: {
+        details: [
+          { id: 1, title: '범국민 온라인 AI 교육센터 구축', description: 'STEP 및 국방 AI 교육플랫폼을 연계한 통합 온라인 AI 교육센터 \'우리의 AI 러닝\'을 운영하여 전 국민의 AI 접근성을 제고합니다.', saved: false },
+          { id: 2, title: '청년 맞춤 AI 직무교육 강화', description: 'STEP 플랫폼을 활용해 구직·재직 청년의 온라인 AI 직무 역량을 강화하고 이를 오프라인 직업훈련 과정과 긴밀히 연계합니다.', saved: false },
+          { id: 3, title: '청년 주도 AX 멘토링 신설', description: 'AI 전공 대학생이 초·중·고 학생을 대상으로 지식을 나누는 멘토링 사업을 추진하여 지역 간 교육 격차를 해소하고 지속 가능한 AI 생태계를 만듭니다.', saved: false },
+          { id: 4, title: '온라인 중심 AI 학습 생태계 확산', description: '신분이나 소득, 지역에 관계없이 누구나 AI 교육을 받을 수 있는 온라인 중심의 보편적 학습 환경을 구축하여 디지털 포용을 실현합니다.', saved: false }
+        ]
+      },
+      3: {
+        details: [
+          { id: 1, title: '프로젝트 기반 AI·데이터 인재 양성', description: '기업 및 대학과 협력하여 프로젝트 기반의 K-디지털 트레이닝 과정을 운영하며 연간 5만 명 규모의 AI·빅데이터 실무 인재를 양성합니다.', saved: false },
+          { id: 2, title: '고급 AI 인재 양성 과정 확대', description: '최고 전문가의 멘토링을 제공하는 AI·SW 마에스트로와 혁신적 교육 방식의 AI 이노아카데미 과정을 확대하여 역량 있는 전문 인재를 육성합니다.', saved: false },
+          { id: 3, title: '신산업 융합 인재 육성', description: '가상융합기술 아카데미를 통해 XR 및 메타버스 등 신산업 분야의 취·창업 희망 청년들에게 전문적인 개발 및 창작 교육 기회를 제공합니다.', saved: false },
+          { id: 4, title: '중소기업 재직자 AI 역량 강화', description: '중소기업 재직자를 위한 AI 특화 교육 과정과 공동훈련센터를 신설하여 5년간 10만 명의 재직자에게 AI 리터러시 및 전문 교육을 지원합니다.', saved: false },
+          { id: 5, title: '재직자 AI+X(AID) 집중과정 확대', description: '다양한 산업 및 직무별로 AI 융합 역량을 키울 수 있도록 성인 재직자를 대상으로 하는 맞춤형 AI+X(AID) 집중 교육 과정을 확대 운영합니다.', saved: false }
+        ]
+      },
+      4: {
+        details: [
+          { id: 1, title: '이공계 장학금 지원 확대', description: '대학원 대통령과학장학금과 이공계 석·박사 우수장학금 규모를 2030년까지 각각 1,000명과 9,000명 수준으로 단계적 확대하여 연구 몰입 환경을 조성합니다.', saved: false },
+          { id: 2, title: '대학원생 연구생활 안정 지원', description: '이공계 대학원생의 경제적 안전망 구축을 위해 연구생활장려금 지원 대상을 50개교 이상으로 늘리고 석사 월 80만 원, 박사 월 110만 원의 수준을 보장합니다.', saved: false },
+          { id: 3, title: '박사후연구원 제도 개선', description: '고등교육법 개정을 통해 박사후연구원의 법적 지위를 명문화하고 표준지침을 제정·배포하여 안정적인 연구 및 근로 여건을 마련합니다.', saved: false },
+          { id: 4, title: '경력개발 지원', description: '신규 박사후연구원을 대상으로 기업과 대학이 함께하는 산학 프로젝트 지원 사업을 신설하여 우수 과학기술 인재의 산업계 안착과 경력 형성을 돕습니다.', saved: false }
+        ]
+      },
+      5: {
+        details: [
+          { id: 1, title: '전략산업 분야별 인재 양성', description: '에너지, 건축, 의료·의약품, 정보보안 등 각 부처의 전문성을 활용하여 2030년까지 국가 전략산업 맞춤형 전문인재 14만 명 이상을 양성합니다.', saved: false },
+          { id: 2, title: '미래 핵심 분야 고급 교육 확대', description: '스마트시티, 에너지 신산업, AI 반도체, 규제과학 등 고부가가치 미래 핵심 분야의 석·박사급 전문 교육 및 연구 지원을 대폭 강화합니다.', saved: false },
+          { id: 3, title: '산업 수요 연계 인재 양성 체계', description: '산업계 특성화대학원 확대 및 산학연계 인턴십 등을 통해 현장 중심의 실무형 인재와 석·박사급 고급 인재를 병행하여 육성하는 체계를 구축합니다.', saved: false },
+          { id: 4, title: '전문 직무 역량 기반 경력 설계 지원', description: '분야별 전문 직무 역량을 바탕으로 청년들이 해당 산업계에 안정적으로 안착하고 지속 가능한 직업 경로를 형성할 수 있도록 체계적으로 지원합니다.', saved: false }
+        ]
+      },
+      6: {
+        details: [
+          { id: 1, title: '교육-산업 연계 제도 강화', description: '대학과 기업이 공동으로 운영하고 채용까지 연계하는 계약학과 및 계약정원을 확대하고, 현장실습 제도를 유연하게 개선하여 취업 연계 기능을 강화합니다.', saved: false },
+          { id: 2, title: '직업교육 연계 경로 확대', description: '직업계고와 전문대 간 교육과정 연계(3+1 전문학사) 및 산업체 현장 경험을 학점으로 인정하는 \'2+3 마이스터 학사\' 도입을 통해 학위 취득 기간을 단축합니다.', saved: false },
+          { id: 3, title: '직업계고 청년 취업 지원 강화', description: '신기술 분야 학과 개편과 채용연계형 직무교육과정 운영을 내실화하고, 고교 취업연계 장려금 지원을 통해 조기 사회 진출을 돕습니다.', saved: false },
+          { id: 4, title: '학비·생활비 부담 완화', description: '국가장학금 지원 대상을 9구간까지 확대하고 학자금 대출 신청 대상을 모든 재학생으로 넓혀 배경과 관계없이 공정한 교육 기회를 보장합니다.', saved: false },
+          { id: 5, title: '평생학습 기반 강화', description: '고졸 재직자 대상 장학금 지원을 지속하고 평생교육이용권 및 K-MOOC 강좌 확대를 통해 청년들이 언제든 원하는 교육을 받을 수 있는 환경을 조성합니다.', saved: false }
+        ]
+      }
+    },
+    'finance-welfare-culture': {
+      1: {
+        details: [
+          { id: 1, title: '청년미래적금 신설 (혜택 강화)', description: '기존 청년도약계좌 대비 납입 기간을 3년으로 단축하고 정부 기여금을 최대 12%까지 확대하여 초기 자산 형성을 지원합니다.', saved: false },
+          { id: 2, title: '장병 내일준비적금 (병사)', description: '군 복무 중인 병사가 월 최대 55만 원을 납입할 경우 정부가 100%를 매칭하고 비과세 혜택을 제공하여 전역 시 목돈 마련을 돕습니다.', saved: false },
+          { id: 3, title: '장기간부 도약적금 (간부)', description: '초급 군 간부 장기 복무자를 대상으로 3년 동안 월 최대 30만 원 납입액에 대해 정부 기여금을 100% 매칭 지급하여 자립 기반을 강화합니다.', saved: false },
+          { id: 4, title: '청년 자산형성 5종 세트 연계', description: '청년미래적금, 내일저축계좌, 주택드림청약통장, 장병내일적금, 서민형 ISA 간의 연계를 강화하여 체계적인 자산 관리가 가능하도록 개선합니다.', saved: false }
+        ]
+      },
+      2: {
+        details: [
+          { id: 1, title: '햇살론 유스 금리 인하', description: '고졸 취업준비생이나 미취업 청년의 이자 부담을 완화하기 위해 햇살론 유스의 대출 금리를 학자금 대출 수준으로 인하를 추진합니다.', saved: false },
+          { id: 2, title: '청년 채무조정 특례 확대', description: '금융 채무 연체로 어려움을 겪는 청년에게 이자율을 70%까지 일괄 인하하고 원금 감면 비율을 확대하는 채무조정 특례를 지속 지원합니다.', saved: false },
+          { id: 3, title: '맞춤형 재무 진단 및 상담', description: '재무 상담이 필요한 모든 청년을 대상으로 전문가를 통한 기초 재무 진단 및 일대일 맞춤형 금융 솔루션을 제공합니다.', saved: false },
+          { id: 4, title: '체험형 금융 시뮬레이션 도입', description: '저축, 대출, 보험, 투자 등 다양한 금융 활동을 모의로 경험하며 금융 이해력을 높일 수 있는 실전형 교육 프로그램을 운영합니다.', saved: false },
+          { id: 5, title: '청년 경제 캠프 및 토크콘서트', description: '대학생과 사회초년생 등을 위해 AI 기반 개인 맞춤형 경제 진단, 전문가 멘토링, 온·오프라인 강좌 등 다양한 교육 기회를 확대합니다.', saved: false }
+        ]
+      },
+      3: {
+        details: [
+          { id: 1, title: '위기청년 전담 지원 체계 구축', description: '위기 청년 전담 지원 기관인 청년미래센터를 전국으로 단계적 확대하고 학교나 병원 종사자가 위험 사례 발견 시 직권 신청할 수 있는 시스템을 마련합니다.', saved: false },
+          { id: 2, title: '고립·은둔 청년 맞춤형 회복 지원', description: '초기 상담을 통해 고립도를 정밀하게 파악하고 공동생활 프로그램이나 가상회사 형태의 일경험 등을 연계하여 단계적인 일상 회복을 돕습니다.', saved: false },
+          { id: 3, title: '가족돌봄청년 자기돌봄비 지원', description: '아픈 가족을 돌보는 청년이 본인의 성장에 집중할 수 있도록 연 200만 원의 자기돌봄비를 지급하고 맞춤형 사례 관리를 강화합니다.', saved: false },
+          { id: 4, title: '가족 의료·돌봄 서비스 연계', description: '가족 돌봄 부담을 덜어주기 위해 사회서비스 본인 부담 비율을 할인하고 자활 사업 참가 유예 등 가족 돌봄 특화 지원을 실시합니다.', saved: false }
+        ]
+      },
+      4: {
+        details: [
+          { id: 1, title: '자립준비청년 수당 및 정착금 확대', description: '자립수당(월 50만원)과 자립정착금(1,000만원 이상) 지원을 강화하고 맞춤형 사례관리를 통해 경제적·정서적 자립을 돕습니다.', saved: false },
+          { id: 2, title: '디지털 진로 체험', description: '자립준비청년에게 디지털 분야 창업 교육, 미디어 창작 교육, 기업 인턴십 등 다양한 직업 체험 기회를 제공하여 미래 진로 설계를 지원합니다.', saved: false },
+          { id: 3, title: '임대주택 지원', description: '자립준비청년의 안정적인 주거 정착을 위해 연간 2,000호 규모의 공공임대주택을 우선 공급하고 입주 및 재무 관리 교육을 병행합니다.', saved: false },
+          { id: 4, title: '저소득 한부모 양육비 인상', description: '저소득 청년 한부모(25~34세)의 자녀 양육 부담을 덜어주기 위해 아동양육비 추가 지원금을 인상하여 월 최대 33만원까지 지원합니다.', saved: false },
+          { id: 5, title: '경계선 지능 청년 취업 지원', description: '지원의 사각지대에 있던 경계선 지능 청년들을 위해 기초 소양 교육부터 구직 기술 습득까지 이어지는 전용 프로그램을 신설하고 참여 수당을 지급합니다.', saved: false },
+          { id: 6, title: '장애·이주 청년 맞춤 지원', description: '장애 대학생의 원격교육 및 보조기기 지원을 강화하고, 이주배경 청년의 한국 사회 초기 적응과 진로 상담을 위한 사례 관리를 지원합니다.', saved: false }
+        ]
+      },
+      5: {
+        details: [
+          { id: 1, title: '청년 정신건강 검진·관리 강화', description: '정신건강 검진 주기를 2년으로 단축하고 우울증과 조기정신증 등 검사 항목을 확대하여 마음 건강 문제를 조기에 발견하고 치료를 지원합니다.', saved: false },
+          { id: 2, title: '청년 마음건강 AI 시스템 도입', description: 'AI 키오스크와 비대면 상담 앱을 통해 정신건강 상담의 문턱을 낮추고, 검진 결과 위험군에게는 전문 심리상담 바우처를 즉시 연계합니다.', saved: false },
+          { id: 3, title: '청년 자살예방 및 중독 관리 강화', description: '고위험군 청년 대상 SNS 상담과 AI 모니터링을 통해 자살 위기 신호를 조기에 발견하고, 마약 및 알코올 중독 치료를 위한 의료 지원을 강화합니다.', saved: false },
+          { id: 4, title: '맞춤형 신체건강 서비스 제공', description: '청년사회서비스 식단을 통해 맞춤형 운동 및 식단 관리 서비스를 제공하고, 생활밀착형 체육시설 확충으로 신체 건강 증진 환경을 조성합니다.', saved: false },
+          { id: 5, title: '청년 식생활 지원(천원의 아침밥 등)', description: '대학생 \'천원의 아침밥\' 지원 대상을 540만 명까지 확대하고, 중소기업 근로자 식비 보조 시범사업과 농식품 바우처 지원을 통해 건강한 식습관을 돕습니다.', saved: false }
+        ]
+      },
+      6: {
+        details: [
+          { id: 1, title: '청년 문화예술 패스 확대', description: '지원 대상을 19~20세로 확대하고 비수도권 지원금을 최대 20만원으로 상향하며 영화와 도서 분야까지 사용 범위를 넓힙니다.', saved: false },
+          { id: 2, title: 'K-패스 \'모두의 카드\' 도입', description: '월 5.5만원으로 지하철과 버스를 무제한 이용할 수 있는 패스를 신설하여 청년들의 교통비 부담을 획기적으로 절감합니다.', saved: false },
+          { id: 3, title: '문화 콘텐츠 창작 및 인재 양성', description: '게임, 웹툰, OTT 등 유망 콘텐츠 분야 인재를 육성하고, 순수예술 청년 창작자에게 창작 활동에 전념할 수 있도록 연 900만원을 지원합니다.', saved: false },
+          { id: 4, title: '국민연금 생애 첫 보험료 지원', description: '18~26세 청년이 국민연금에 가입할 때 첫 보험료 지원을 추진하여 연금 가입 기간 확보를 통한 미래 노후 소득 보장을 강화합니다.', saved: false },
+          { id: 5, title: '군 장병 통신 및 연금 혜택', description: '군 장병 통신 요금 할인율을 높이고 군 복무 크레딧 인정 기간을 최대 12개월 이상으로 확대하여 국방 의무 이행에 대한 보상을 실질화합니다.', saved: false }
+        ]
+      }
+    },
+    'participation': {
+      1: {
+        details: [
+          { id: 1, title: '대통령 주재 소통·공감 토크콘서트', description: '대통령이 청년농업인, 창업가 등 다양한 청년들과 정례적으로 직접 만나 주요 국정 이슈를 토론하고 정책 방향을 함께 고민하는 소통 채널을 운영합니다.', saved: false },
+          { id: 2, title: '국무총리 주재 미래대화 1·2·3(K-토론나라)', description: '교육, 일자리, 문화 등 청년 삶과 밀접한 주제를 바탕으로 국무총리와 청년들이 격의 없이 소통하고 의견을 수렴하는 사회적 대화 플랫폼을 활성화합니다.', saved: false },
+          { id: 3, title: '대통령비서실장 주재 청년미래자문단', description: '중장기적 사회 이슈를 청년의 시각에서 심도 있게 숙의하고 국정에 직접 자문 및 정책안을 건의할 수 있는 전담 기구를 운영합니다.', saved: false },
+          { id: 4, title: '온·오프라인 통합 청년 토론회', description: '핵심 국가 의제에 대해 청년들이 온·오프라인으로 참여하여 직접 투표하고 해결 방안을 모색하는 새로운 소통의 장을 신설합니다.', saved: false },
+          { id: 5, title: '청년정책 관계장관회의', description: '국무총리 주재로 부처 간 이견을 조정하고 청년 제안을 실제 정책에 신속히 반영하는 의사결정 체계를 구축하여 정책의 실행력을 높입니다.', saved: false }
+        ]
+      },
+      2: {
+        details: [
+          { id: 1, title: '정부위원회 청년 위원 20% 상향', description: '정부의 주요 정책 결정 과정에 청년 참여를 제도적으로 보장하기 위해 정부위원회 내 청년 위원 위촉 비율을 기존 10%에서 20% 이상으로 확대합니다.', saved: false },
+          { id: 2, title: '청년정책조정위원회 전문위 설치', description: '일자리, 교육, 주거 등 6개 분과의 청년 60명이 직접 사업을 제안하고 수립 과정에 주도적으로 참여하는 실질적인 거버넌스를 확립합니다.', saved: false },
+          { id: 3, title: '청년보좌역 제도 내실화', description: '정책 수립 과정에서 청년의 목소리를 대변할 수 있도록 선발 방식에 정책 제안서 평가를 추가하고 부처별 실무 역할을 부여하여 제도를 강화합니다.', saved: false }
+        ]
+      },
+      3: {
+        details: [
+          { id: 1, title: 'AI·빅데이터 기반 \'온통청년\' 고도화', description: '개인별 이력과 관심사를 AI로 정밀 분석하여 청년에게 꼭 필요한 맞춤형 정책 정보를 자동으로 추천해주는 지능형 시스템을 구축합니다.', saved: false },
+          { id: 2, title: '온라인 정책 투표 및 피드백 기능', description: '온라인 통합 플랫폼 내에 투표 기능을 신설하여 청년들이 정부 정책에 대해 상시적으로 선호도를 표현하고 즉각적으로 의견을 전달할 수 있게 합니다.', saved: false },
+          { id: 3, title: '청년신문고 및 정책 공모전 확대', description: '청년들이 일상에서 느끼는 창의적인 정책 아이디어를 언제든 자유롭게 제안하고 실제 정책으로 수용될 수 있는 온라인 소통 창구를 넓힙니다.', saved: false },
+          { id: 4, title: '청년 참여 포인트제 도입 검토', description: '정책 참여 활동 이력을 마일리지로 적립하고, 이를 지원 사업 참여 시 우대 혜택이나 인센티브로 활용할 수 있는 보상 체계를 마련합니다.', saved: false }
+        ]
+      },
+      4: {
+        details: [
+          { id: 1, title: '지역 청년지원센터 허브 기능 강화', description: '지역 청년지원센터를 청년정책 사업의 거점 기관으로 개편하고 고용·복지 센터 등 유관 기관과의 협업 체계를 구축합니다.', saved: false },
+          { id: 2, title: '지역청년정책실험실 운영', description: '지역 청년의 수요를 반영한 혁신적인 사업 모델을 발굴하고 실험하여 우수 사례를 전국으로 확산시킵니다.', saved: false },
+          { id: 3, title: '상향식 제안 체계(기초 → 광역 → 중앙)', description: '기초 지자체 청년센터에서 수렴된 청년들의 목소리가 중앙 정부 정책에 실질적으로 반영되는 파이프라인을 구축합니다.', saved: false },
+          { id: 4, title: '청년친화도시 지정 및 지원', description: '매년 3개 도시를 청년친화도시로 지정하여 지역별 맞춤형 정책 수립과 재정 지원을 통해 청년의 지역 정주 여건을 개선합니다.', saved: false },
+          { id: 5, title: '청년마을 모델 발전', description: '청년 주도의 지역 탐색과 일거리 실험 프로그램을 통해 청년의 지역 유입을 돕고 공동체 회복을 지원합니다.', saved: false },
+          { id: 6, title: '청년두레(지역공동체) 창업 지원', description: '지역 청년공동체가 주도하는 관광 활성화를 위해 창업 및 경영 지원을 제공하여 지역 경제 활력을 제고합니다.', saved: false }
+        ]
+      },
+      5: {
+        details: [
+          { id: 1, title: '청년 연령 기준 34세 상향 추진', description: '사회진출 지연 추세를 반영하여 법령상 청년 연령 기준을 상향 조정하고 지원 정책의 사각지대를 해소합니다.', saved: false },
+          { id: 2, title: '청년인재 데이터베이스 구축', description: 'AI 기술을 활용해 분야별 우수 청년 인재를 발굴하고 정부 위원회 등 정책 결정 과정에 맞춤형 매칭을 지원합니다.', saved: false },
+          { id: 3, title: '한국청년정책진흥원 신설 추진', description: '청년 정책을 통합적으로 전달하고 청년 참여 활동을 전문적으로 육성·지원하는 지속 가능한 전담 기구를 설립합니다.', saved: false },
+          { id: 4, title: '사회보장제도 협의 절차 간소화', description: '지자체 자체 청년 사업 추진의 자율성을 높이기 위해 국조실에서 사전 스크린을 통한 신속 협의 체계를 마련합니다.', saved: false },
+          { id: 5, title: '청년발전지표 개발', description: '청년의 삶의 질과 정책 참여 수준을 전국 및 지자체 단위로 정밀하게 측정할 수 있는 객관적인 지표를 개발하여 보급합니다.', saved: false },
+          { id: 6, title: '청년 특화 연구 역량 강화', description: '청년의 관점에서 정책 효과성을 분석하고 현안에 맞는 대안을 제시할 수 있는 전문적인 연구 추진 체계를 구축합니다.', saved: false }
+        ]
+      },
+      6: {
+        details: [
+          { id: 1, title: '(가칭)아태 청년교류단 설치', description: '한·미·중·일 4개국 청년들이 상호 파견 및 체류하며 네트워크를 형성하고 상호 이해를 높이는 문화 교류 플랫폼을 운영합니다.', saved: false },
+          { id: 2, title: 'CAMPUS Asia 공동 학위 운영', description: '한·중·일 및 아세안 국가 간 대학 학생 교류와 공동·복수 학위 취득 지원 프로그램을 대폭 확대합니다.', saved: false },
+          { id: 3, title: '분야별 국제 교류 확대', description: '첨단 기술, 역사, 문화 등 다양한 테마를 기반으로 청년들에게 글로벌 현장 경험과 전문 지식 습득의 기회를 제공합니다.', saved: false },
+          { id: 4, title: '젠더 갈등 해소 공론장 운영', description: '성별 불균형 의제에 대해 청년들이 직접 참여하여 숙의하고 주도적으로 정책 대안을 도출하는 기회를 마련합니다.', saved: false },
+          { id: 5, title: '성별 고정관념 해소 캠페인', description: '인식 개선 공모전 등을 통해 양성평등에 대한 사회적 이해를 넓히고 상호 존중하는 문화를 정착시킵니다.', saved: false }
+        ]
+      }
     }
   }
 
@@ -334,6 +497,30 @@ const currentPolicy = computed(() => {
       4: '/images/policies/housing/policy-4.png',
       5: '/images/policies/housing/policy-5.png',
       6: '/images/policies/housing/policy-6.png'
+    },
+    'education': {
+      1: '/images/policies/education/policy-1.png',
+      2: '/images/policies/education/policy-2.png',
+      3: '/images/policies/education/policy-3.png',
+      4: '/images/policies/education/policy-4.png',
+      5: '/images/policies/education/policy-5.png',
+      6: '/images/policies/education/policy-6.png'
+    },
+    'finance-welfare-culture': {
+      1: '/images/policies/finance-welfare-culture/policy-1.png',
+      2: '/images/policies/finance-welfare-culture/policy-2.png',
+      3: '/images/policies/finance-welfare-culture/policy-3.png',
+      4: '/images/policies/finance-welfare-culture/policy-4.png',
+      5: '/images/policies/finance-welfare-culture/policy-5.png',
+      6: '/images/policies/finance-welfare-culture/policy-6.png'
+    },
+    'participation': {
+      1: '/images/policies/participation/policy-1.png',
+      2: '/images/policies/participation/policy-2.png',
+      3: '/images/policies/participation/policy-3.png',
+      4: '/images/policies/participation/policy-4.png',
+      5: '/images/policies/participation/policy-5.png',
+      6: '/images/policies/participation/policy-6.png'
     }
   }
 

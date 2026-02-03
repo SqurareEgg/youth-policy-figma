@@ -43,3 +43,6 @@ yarn-error.log*
 *.mov
 *.mp4
 *.avi
+
+.vercel
+.env*.local
