@@ -1,5 +1,5 @@
 <template>
-  <header style="background-color: white; border-bottom: 1px solid #E5E7EB; position: sticky; top: 0; z-index: 50;">
+  <header style="background-color: white; border-bottom: 1px solid #E5E7EB; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); position: sticky; top: 0; z-index: 50;">
     <div class="container mx-auto px-4" style="height: 64px;">
       <!-- Desktop Layout -->
       <div class="gt-md header-desktop">
