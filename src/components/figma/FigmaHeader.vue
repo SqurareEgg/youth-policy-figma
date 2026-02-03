@@ -85,7 +85,7 @@
     <div v-if="mobileMenuOpen" style="background-color: white; border-top: 1px solid #E5E7EB;">
       <div class="container" style="padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
         <!-- 카테고리 -->
-        <div style="padding-bottom: 0.75rem; border-bottom: 1px solid #E5E7EB;">
+        <div style="padding-bottom: 0.75rem;">
           <p style="font-size: 0.75rem; color: #6B7280; margin-bottom: 0.5rem;">카테고리</p>
           <q-btn
             v-for="category in categories"
