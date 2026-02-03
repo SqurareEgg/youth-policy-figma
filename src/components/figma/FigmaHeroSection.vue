@@ -46,8 +46,7 @@
             :autoplay-interval="4000"
             transition-prev="slide-right"
             transition-next="slide-left"
-            style="background-color: transparent; border-radius: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
-            height="400px"
+            class="hero-carousel"
           >
             <q-carousel-slide
               v-for="(news, index) in newsSlides"
@@ -208,6 +207,25 @@ h1 {
 @media (min-width: 640px) {
   .bullet-text {
     font-size: 1rem;
+  }
+}
+
+.hero-carousel {
+  background-color: transparent;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  height: 280px;
+}
+
+@media (min-width: 640px) {
+  .hero-carousel {
+    height: 350px;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-carousel {
+    height: 400px;
   }
 }
 </style>
