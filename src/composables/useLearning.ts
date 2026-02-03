@@ -310,6 +310,59 @@ export function useLearning() {
     }
   }
 
+  // 사용자 영상 진행 상태 가져오기
+  const fetchVideoProgress = async (userId: string, categoryId: number) => {
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('user_video_progress')
+        .select('*, videos!inner(category_id)')
+        .eq('user_id', userId)
+        .eq('videos.category_id', categoryId)
+
+      if (fetchError) throw fetchError
+
+      return data || []
+    } catch (err: any) {
+      console.error('영상 진행 상태 가져오기 에러:', err.message)
+      return []
+    }
+  }
+
+  // 사용자 퀴즈 진행 상태 가져오기
+  const fetchQuizProgress = async (userId: string, categoryId: number) => {
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('user_quiz_results')
+        .select('quiz_id, score, passed, completed_at, quizzes!inner(category_id)')
+        .eq('user_id', userId)
+        .eq('quizzes.category_id', categoryId)
+        .order('completed_at', { ascending: false })
+
+      if (fetchError) throw fetchError
+
+      // 각 퀴즈별 최고 점수만 추출
+      const bestResults = data?.reduce((acc: any[], result: any) => {
+        const existing = acc.find(r => r.quiz_id === result.quiz_id)
+        if (!existing || existing.score < result.score) {
+          const filtered = acc.filter(r => r.quiz_id !== result.quiz_id)
+          filtered.push({
+            quiz_id: result.quiz_id,
+            score: result.score,
+            passed: result.passed,
+            completed: true
+          })
+          return filtered
+        }
+        return acc
+      }, [])
+
+      return bestResults || []
+    } catch (err: any) {
+      console.error('퀴즈 진행 상태 가져오기 에러:', err.message)
+      return []
+    }
+  }
+
   return {
     videos,
     quizzes,
@@ -328,6 +381,8 @@ export function useLearning() {
     // Q&A
     fetchQnAByCategory,
     // 진도율
-    fetchLearningProgress
+    fetchLearningProgress,
+    fetchVideoProgress,
+    fetchQuizProgress
   }
 }

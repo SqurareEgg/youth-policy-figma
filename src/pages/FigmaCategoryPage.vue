@@ -214,12 +214,14 @@ import { useQuasar } from 'quasar'
 import FigmaHeader from '../components/figma/FigmaHeader.vue'
 import FigmaFooter from '../components/figma/FigmaFooter.vue'
 import { useAuth } from '../composables/useAuth'
+import { useLearning } from '../composables/useLearning'
 
 const route = useRoute()
 const router = useRouter()
 const $q = useQuasar()
 
 const { user } = useAuth()
+const { fetchLearningProgress, fetchVideoProgress, fetchQuizProgress } = useLearning()
 
 // 하드코딩된 데이터를 위한 refs
 const videos = ref<any[]>([])
@@ -343,8 +345,8 @@ const fetchYouTubeThumbnail = async (videoUrl: string): Promise<string | null> =
   }
 }
 
-// 카테고리 데이터 가져오기 (하드코딩)
-const loadCategoryData = () => {
+// 카테고리 데이터 가져오기 (하드코딩 + 학습 진행 상태는 DB에서)
+const loadCategoryData = async () => {
   loading.value = true
 
   try {
@@ -414,8 +416,46 @@ const loadCategoryData = () => {
     // Q&A는 빈 배열로 (Q&A 페이지에서 하드코딩된 데이터 사용)
     qnaList.value = []
 
-    // 이수율 초기화
-    completionRate.value = 0
+    // 로그인한 경우 학습 진행 상태 가져오기
+    if (user.value) {
+      try {
+        // 영상 진행 상태 가져오기
+        const videoProgress = await fetchVideoProgress(user.value.id, categoryData.value.id)
+        if (videoProgress && videoProgress.length > 0) {
+          videos.value = videos.value.map(video => {
+            const progress = videoProgress.find((p: any) => p.video_id === video.id)
+            return {
+              ...video,
+              completed: progress?.completed || false
+            }
+          })
+        }
+
+        // 퀴즈 진행 상태 가져오기
+        const quizProgress = await fetchQuizProgress(user.value.id, categoryData.value.id)
+        if (quizProgress && quizProgress.length > 0) {
+          quizzes.value = quizzes.value.map(quiz => {
+            const progress = quizProgress.find((p: any) => p.quiz_id === quiz.id)
+            return {
+              ...quiz,
+              completed: progress?.completed || false,
+              passed: progress?.passed || false
+            }
+          })
+        }
+
+        // 전체 이수율 가져오기
+        const learningProgress = await fetchLearningProgress(user.value.id, categoryData.value.id)
+        completionRate.value = learningProgress?.completion_percentage || 0
+      } catch (error: any) {
+        console.error('학습 진행 상태 로딩 에러:', error)
+        // 진행 상태 로딩 실패는 치명적 에러가 아니므로 계속 진행
+        completionRate.value = 0
+      }
+    } else {
+      // 로그인하지 않은 경우 이수율 0
+      completionRate.value = 0
+    }
   } catch (error: any) {
     console.error('카테고리 데이터 로딩 에러:', error)
     $q.notify({
