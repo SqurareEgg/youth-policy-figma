@@ -1,8 +1,8 @@
 <template>
-  <div style="min-height: 100vh; background-color: white;">
+  <div style="min-height: 100vh; background-color: white; overflow-x: hidden;">
     <FigmaHeader :current-category="categoryName" />
 
-    <div style="min-height: 100vh; background-color: #F9FAFB;">
+    <div style="min-height: 100vh; background-color: #F9FAFB; overflow-x: hidden;">
       <!-- Back Button & Header -->
       <div style="background-color: white; border-bottom: 1px solid #E5E7EB; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
         <div style="max-width: 1280px; margin: 0 auto; padding: 1.5rem 1rem;">
@@ -31,7 +31,7 @@
 
       <!-- 메인 레이아웃 -->
       <div v-else class="container">
-        <div style="display: flex; gap: 4rem;">
+        <div class="main-layout">
           <!-- 사이드바 (데스크탑) -->
           <aside class="gt-md sidebar">
             <div style="background-color: white; border: 1px solid #E5E7EB; border-radius: 1rem; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); padding: 1rem;">
@@ -50,7 +50,7 @@
           </aside>
 
           <!-- 메인 콘텐츠 -->
-          <main style="flex: 1; padding-right: 0;">
+          <main class="main-content">
             <!-- 모바일 탭 (모바일만) -->
             <div class="lt-lg mobile-tabs">
               <div style="display: flex; gap: 0.5rem; padding: 1rem 0; min-width: max-content;">
@@ -481,10 +481,16 @@ const handleImageError = (event: Event) => {
 </script>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+}
+
 .container {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 1rem;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 @media (min-width: 640px) {
@@ -497,6 +503,25 @@ const handleImageError = (event: Event) => {
   .container {
     padding: 0 2rem;
   }
+}
+
+/* 메인 레이아웃 */
+.main-layout {
+  display: flex;
+  gap: 0;
+}
+
+@media (min-width: 1024px) {
+  .main-layout {
+    gap: 4rem;
+  }
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
 }
 
 /* 뒤로가기 버튼 */
@@ -530,11 +555,20 @@ const handleImageError = (event: Event) => {
 }
 
 /* 카테고리 소개 */
+.category-intro-section {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
 .category-intro-title {
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   line-height: 1.3;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
 }
 
 @media (min-width: 640px) {
@@ -548,6 +582,9 @@ const handleImageError = (event: Event) => {
   font-size: 1rem;
   color: #374151;
   line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
 }
 
 @media (min-width: 640px) {
@@ -563,6 +600,9 @@ const handleImageError = (event: Event) => {
   border: 1px solid #E5E7EB;
   padding: 1.25rem;
   margin-top: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 @media (min-width: 640px) {
@@ -590,6 +630,8 @@ const handleImageError = (event: Event) => {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 @media (min-width: 640px) {
@@ -601,7 +643,9 @@ const handleImageError = (event: Event) => {
 /* 세부 정책 카드 */
 .policy-card {
   width: 100%;
+  max-width: 100%;
   text-align: left;
+  box-sizing: border-box;
   padding: 1rem;
   border-radius: 0.75rem;
   border: 1px solid #E5E7EB;
@@ -626,6 +670,9 @@ const handleImageError = (event: Event) => {
   align-items: flex-start;
   gap: 0.75rem;
   margin-bottom: 0.25rem;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
 @media (min-width: 640px) {
@@ -649,6 +696,10 @@ const handleImageError = (event: Event) => {
   flex: 1;
   transition: color 0.2s;
   line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
+  width: 100%;
 }
 
 @media (min-width: 640px) {
@@ -667,6 +718,9 @@ const handleImageError = (event: Event) => {
   line-height: 1.6;
   margin: 0;
   padding-left: calc(1rem + 0.75rem);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
 }
 
 @media (min-width: 640px) {
@@ -681,6 +735,10 @@ const handleImageError = (event: Event) => {
   border-radius: 1rem;
   border: 1px solid #FED7AA;
   padding: 1.25rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 @media (min-width: 640px) {
@@ -752,6 +810,8 @@ const handleImageError = (event: Event) => {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -770,6 +830,10 @@ const handleImageError = (event: Event) => {
   padding: 1.25rem;
   transition: all 0.2s;
   cursor: pointer;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 @media (min-width: 640px) {
@@ -883,6 +947,9 @@ const handleImageError = (event: Event) => {
 .content-area {
   padding-top: 1.5rem;
   padding-bottom: 2rem;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 @media (min-width: 768px) {
@@ -894,6 +961,9 @@ const handleImageError = (event: Event) => {
 /* 카테고리 소개 섹션 */
 .category-intro-section {
   margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
@@ -907,6 +977,8 @@ const handleImageError = (event: Event) => {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -966,12 +1038,14 @@ const handleImageError = (event: Event) => {
   margin: 0 -1rem;
   padding: 0 1rem;
   margin-bottom: 1.5rem;
+  width: calc(100% + 2rem);
 }
 
 @media (min-width: 640px) {
   .mobile-tabs {
     margin: 0 -1.5rem;
     padding: 0 1.5rem;
+    width: calc(100% + 3rem);
   }
 }
 
