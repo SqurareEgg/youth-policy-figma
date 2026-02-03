@@ -9,22 +9,26 @@
           </h1>
 
           <div class="hero-content">
-            <p class="hero-description">
-              19세부터 39세까지, 대전에 거주하는 청년이라면 누구나 신청할 수 있는 중앙정부와 지자체 정책을 한곳에 모았습니다.
-            </p>
+            <div class="info-card">
+              <p class="hero-description">
+                19세부터 39세까지, 대전에 거주하는 청년이라면 누구나 신청할 수 있는 중앙정부와 지자체 정책을 한곳에 모았습니다.
+              </p>
 
-            <div class="hero-bullets">
-              <div class="bullet-item">
-                <span class="text-primary bullet-dot">•</span>
-                <span class="bullet-text">일자리, 주거, 교육, 복지, 참여까지 분야별 정책 안내</span>
-              </div>
-              <div class="bullet-item">
-                <span class="text-primary bullet-dot">•</span>
-                <span class="bullet-text">본인에게 맞는 정책을 쉽게 찾고 학습할 수 있는 시스템</span>
-              </div>
-              <div class="bullet-item">
-                <span class="text-primary bullet-dot">•</span>
-                <span class="bullet-text">정책 변경사항과 신규 혜택 실시간 업데이트</span>
+              <div class="card-divider"></div>
+
+              <div class="hero-bullets">
+                <div class="bullet-item">
+                  <span class="text-primary bullet-dot">•</span>
+                  <span class="bullet-text">일자리, 주거, 교육, 복지, 참여까지 분야별 정책 안내</span>
+                </div>
+                <div class="bullet-item">
+                  <span class="text-primary bullet-dot">•</span>
+                  <span class="bullet-text">본인에게 맞는 정책을 쉽게 찾고 학습할 수 있는 시스템</span>
+                </div>
+                <div class="bullet-item">
+                  <span class="text-primary bullet-dot">•</span>
+                  <span class="bullet-text">정책 변경사항과 신규 혜택 실시간 업데이트</span>
+                </div>
               </div>
             </div>
           </div>
@@ -137,11 +141,37 @@ h1 {
   margin-bottom: 2rem;
 }
 
+.info-card {
+  background-color: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+@media (min-width: 640px) {
+  .info-card {
+    padding: 2rem;
+  }
+}
+
+.card-divider {
+  height: 1px;
+  background-color: #E5E7EB;
+  margin: 1.25rem 0;
+}
+
+@media (min-width: 640px) {
+  .card-divider {
+    margin: 1.5rem 0;
+  }
+}
+
 .hero-description {
   font-size: 1rem;
   color: #374151;
   line-height: 1.75;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 @media (min-width: 640px) {
@@ -154,7 +184,6 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  padding-top: 1rem;
 }
 
 .bullet-item {
