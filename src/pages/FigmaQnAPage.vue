@@ -578,12 +578,13 @@ const viewPolicy = (policyId) => {
 
 .qna-answer {
   padding: 1.5rem;
-  padding-top: 1.5rem;
+  padding-top: 2rem;
   display: flex;
   gap: 0.75rem;
   align-items: flex-start;
   background-color: #F9FAFB;
   border-top: 1px solid #E5E7EB;
+  margin-top: 0.5rem;
 }
 
 .qna-answer-badge {
