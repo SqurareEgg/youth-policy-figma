@@ -149,13 +149,10 @@ import { useRoute, useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import FigmaHeader from '../components/figma/FigmaHeader.vue'
 import FigmaFooter from '../components/figma/FigmaFooter.vue'
-import { useCategories } from '../composables/useCategories'
 
 const route = useRoute()
 const router = useRouter()
 const $q = useQuasar()
-
-const { getCategoryBySlug } = useCategories()
 
 const category = computed(() => route.params.category as string)
 const policyId = computed(() => route.params.policyId as string)
@@ -533,12 +530,21 @@ const currentPolicy = computed(() => {
   }
 })
 
-// 카테고리 데이터 가져오기
-const loadCategoryData = async () => {
+// 카테고리 데이터 가져오기 (하드코딩)
+const loadCategoryData = () => {
   try {
-    const categoryInfo = await getCategoryBySlug(category.value)
+    // 카테고리 정보 매핑
+    const categoryMap: Record<string, any> = {
+      'job': { id: 1, name: '일자리', slug: 'job' },
+      'housing': { id: 2, name: '주거', slug: 'housing' },
+      'education': { id: 3, name: '교육', slug: 'education' },
+      'finance-welfare-culture': { id: 4, name: '금융･복지･문화', slug: 'finance-welfare-culture' },
+      'participation': { id: 5, name: '참여', slug: 'participation' }
+    }
 
-    if (!categoryInfo) {
+    categoryData.value = categoryMap[category.value]
+
+    if (!categoryData.value) {
       $q.notify({
         type: 'negative',
         message: '카테고리를 찾을 수 없습니다.',
@@ -547,8 +553,6 @@ const loadCategoryData = async () => {
       router.push('/')
       return
     }
-
-    categoryData.value = categoryInfo
   } catch (error: any) {
     console.error('카테고리 데이터 로딩 에러:', error)
     $q.notify({
