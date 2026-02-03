@@ -117,7 +117,7 @@ const newsSlides = [
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 700;
   margin-bottom: 2rem;
   line-height: 1.25;
@@ -125,13 +125,13 @@ h1 {
 
 @media (min-width: 640px) {
   h1 {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
   }
 }
 
 @media (min-width: 768px) {
   h1 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 2.5rem;
   }
 }
