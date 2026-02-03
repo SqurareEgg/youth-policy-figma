@@ -38,11 +38,20 @@ export function useCategories() {
         .eq('slug', slug)
         .single()
 
-      if (fetchError) throw fetchError
+      if (fetchError) {
+        // AbortError는 조용히 처리
+        if (fetchError.name === 'AbortError' || fetchError.message?.includes('aborted')) {
+          console.log('⚠️ [Categories] 카테고리 가져오기 중단됨')
+          return null
+        }
+        throw fetchError
+      }
 
       return data
     } catch (err: any) {
-      console.error('카테고리 가져오기 에러:', err.message)
+      if (err.name !== 'AbortError' && !err.message?.includes('aborted')) {
+        console.error('카테고리 가져오기 에러:', err.message)
+      }
       return null
     }
   }

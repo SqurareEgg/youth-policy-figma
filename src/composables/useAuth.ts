@@ -121,11 +121,20 @@ export function useAuth() {
         .eq('id', user.value.id)
         .single()
 
-      if (error) throw error
+      if (error) {
+        // AbortError는 조용히 처리
+        if (error.name === 'AbortError' || error.message?.includes('aborted')) {
+          console.log('⚠️ [Auth] 프로필 가져오기 중단됨')
+          return
+        }
+        throw error
+      }
 
       profile.value = data
     } catch (error: any) {
-      console.error('프로필 가져오기 에러:', error.message)
+      if (error.name !== 'AbortError' && !error.message?.includes('aborted')) {
+        console.error('프로필 가져오기 에러:', error.message)
+      }
     }
   }
 
@@ -160,7 +169,17 @@ export function useAuth() {
 
     try {
       // 현재 세션 가져오기
-      const { data: { session: currentSession } } = await supabase.auth.getSession()
+      const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession()
+
+      // AbortError나 네트워크 에러는 무시
+      if (sessionError) {
+        if (sessionError.name === 'AbortError' || sessionError.message?.includes('aborted')) {
+          console.log('⚠️ [Auth] 세션 가져오기 중단됨 (무시)')
+          loading.value = false
+          return
+        }
+        throw sessionError
+      }
 
       if (currentSession) {
         session.value = currentSession
@@ -180,7 +199,12 @@ export function useAuth() {
         }
       })
     } catch (error: any) {
-      console.error('인증 초기화 에러:', error.message)
+      // AbortError는 조용히 처리
+      if (error.name === 'AbortError' || error.message?.includes('aborted')) {
+        console.log('⚠️ [Auth] 인증 초기화 중단됨')
+      } else {
+        console.error('인증 초기화 에러:', error.message)
+      }
     } finally {
       loading.value = false
     }
