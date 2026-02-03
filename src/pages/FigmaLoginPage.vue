@@ -71,11 +71,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { useAuth } from '../composables/useAuth'
 
 const router = useRouter()
+const route = useRoute()
 const $q = useQuasar()
 const { signIn } = useAuth()
 
@@ -96,7 +97,10 @@ const handleLogin = async () => {
         message: '로그인 성공!',
         position: 'top'
       })
-      router.push('/')
+
+      // redirect 쿼리 파라미터가 있으면 그곳으로, 없으면 홈으로
+      const redirect = route.query.redirect as string || '/'
+      router.push(redirect)
     } else {
       $q.notify({
         type: 'negative',

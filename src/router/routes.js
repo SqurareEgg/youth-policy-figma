@@ -53,26 +53,28 @@ const routes = [
   },
 
   // ============================================
-  // 퀴즈 페이지
+  // 퀴즈 페이지 (로그인 필요)
   // ============================================
   {
     path: '/category/:category/quiz/:quizId',
     name: 'quiz',
     component: () => import('../pages/FigmaQuizPage.vue'),
     meta: {
-      title: '퀴즈'
+      title: '퀴즈',
+      requiresAuth: true
     }
   },
 
   // ============================================
-  // 영상 페이지
+  // 영상 페이지 (로그인 필요)
   // ============================================
   {
     path: '/category/:category/video/:videoId',
     name: 'video',
     component: () => import('../pages/FigmaVideoPage.vue'),
     meta: {
-      title: '영상 시청'
+      title: '영상 시청',
+      requiresAuth: true
     }
   },
 
