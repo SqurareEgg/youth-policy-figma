@@ -578,7 +578,7 @@ const viewPolicy = (policyId) => {
 
 .qna-answer {
   padding: 1.5rem;
-  padding-top: 1.25rem;
+  padding-top: 1.5rem;
   display: flex;
   gap: 0.75rem;
   align-items: flex-start;
