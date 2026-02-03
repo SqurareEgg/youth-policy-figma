@@ -551,7 +551,7 @@ const viewPolicy = (policyId) => {
 
 .qna-question-content {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.75rem;
   flex: 1;
   min-width: 0;
@@ -577,14 +577,13 @@ const viewPolicy = (policyId) => {
 }
 
 .qna-answer {
-  padding: 1.5rem;
-  padding-top: 2rem;
   display: flex;
   gap: 0.75rem;
   align-items: flex-start;
   background-color: #F9FAFB;
   border-top: 1px solid #E5E7EB;
-  margin-top: 0.5rem;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  overflow: hidden;
 }
 
 .qna-answer-badge {
@@ -617,20 +616,28 @@ const viewPolicy = (policyId) => {
 .qna-answer-enter-from {
   opacity: 0;
   max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .qna-answer-enter-to {
   opacity: 1;
   max-height: 500px;
+  padding-top: 2rem;
+  padding-bottom: 1.5rem;
 }
 
 .qna-answer-leave-from {
   opacity: 1;
   max-height: 500px;
+  padding-top: 2rem;
+  padding-bottom: 1.5rem;
 }
 
 .qna-answer-leave-to {
   opacity: 0;
   max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 </style>
