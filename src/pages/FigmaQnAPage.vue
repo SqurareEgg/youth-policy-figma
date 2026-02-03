@@ -141,11 +141,10 @@ const router = useRouter()
 const route = useRoute()
 const $q = useQuasar()
 
-const { getSubPolicies, getCategoryBySlug } = useCategories()
+const { getCategoryBySlug } = useCategories()
 
 const category = ref(route.params.category)
 const loading = ref(true)
-const subPolicies = ref([])
 const categoryData = ref(null)
 const expandedItems = ref([])
 
@@ -159,6 +158,54 @@ const categoryNameMap = {
 }
 
 const categoryName = computed(() => categoryData.value?.name || categoryNameMap[category.value] || category.value)
+
+// 카테고리별 세부 정책 리스트
+const subPolicies = computed(() => {
+  const policyMap = {
+    'job': [
+      { id: 1, title: '첫 일자리 진입 및 조기 사회진출 지원', icon: 'business_center' },
+      { id: 2, title: '다시 서기 및 안정적 구직 지원', icon: 'refresh' },
+      { id: 3, title: '실무 역량 강화 및 일경험 확대', icon: 'school' },
+      { id: 4, title: '지역 유입 및 분야별 정착 지원', icon: 'location_on' },
+      { id: 5, title: '노동환경 개선 및 권익 보호', icon: 'shield' },
+      { id: 6, title: '청년 창업 생태계 구축', icon: 'lightbulb' }
+    ],
+    'housing': [
+      { id: 1, title: '청년 공공주택 공급 확대 및 제도 내실화', icon: 'apartment' },
+      { id: 2, title: '청년 특화·기숙사형 주택', icon: 'apartment_complex' },
+      { id: 3, title: '대학 기숙사 확충 및 청년친화 시설 개선', icon: 'school' },
+      { id: 4, title: '지역 일자리 연계 청년 주거 모델 확산', icon: 'location_city' },
+      { id: 5, title: '청년 주거비 및 금융 지원 확대', icon: 'account_balance_wallet' },
+      { id: 6, title: '청년 주거 안정망 및 상담·지원 체계 강화', icon: 'support_agent' }
+    ],
+    'education': [
+      { id: 1, title: 'AI·SW 역량 강화 및 교육 확산', icon: 'computer' },
+      { id: 2, title: '온라인 AI 교육 확대 및 청년 주도 AX', icon: 'online_prediction' },
+      { id: 3, title: '실무 역량 강화 및 맞춤형 인재 양성', icon: 'psychology' },
+      { id: 4, title: '청년 과학기술인 성장 지원', icon: 'science' },
+      { id: 5, title: '전략산업 전문 청년 인재 양성', icon: 'precision_manufacturing' },
+      { id: 6, title: '교육-일자리 연계 및 교육 격차 해소', icon: 'connect_without_contact' }
+    ],
+    'finance-welfare-culture': [
+      { id: 1, title: '청년 초기 자산 형성 지원 강화', icon: 'savings' },
+      { id: 2, title: '금융 안전망 구축 및 경제 역량 강화', icon: 'account_balance' },
+      { id: 3, title: '고립·은둔 및 가족돌봄 청년 집중 케어', icon: 'volunteer_activism' },
+      { id: 4, title: '자립 기반 강화 및 복지 사각지대 해소', icon: 'support' },
+      { id: 5, title: '마음·신체 건강 통합 관리', icon: 'health_and_safety' },
+      { id: 6, title: '문화 향유 확대 및 필수 생활비 경감', icon: 'theater_comedy' }
+    ],
+    'participation': [
+      { id: 1, title: '청년의 국정 참여 확대 및 소통 강화', icon: 'forum' },
+      { id: 2, title: '정책 결정 권한 강화 및 거버넌스 확립', icon: 'how_to_vote' },
+      { id: 3, title: '디지털 기반 참여 플랫폼 고도화', icon: 'devices' },
+      { id: 4, title: '지역 중심 청년 생태계 조성', icon: 'location_city' },
+      { id: 5, title: '지속가능한 지원 인프라 및 법령 정비', icon: 'policy' },
+      { id: 6, title: '글로벌 교류 확대 및 상생 문화 확산', icon: 'public' }
+    ]
+  }
+
+  return policyMap[category.value] || []
+})
 
 // Q&A 데이터 (카테고리별)
 const qnaData = {
@@ -273,12 +320,6 @@ onMounted(async () => {
     const categoryResult = await getCategoryBySlug(category.value)
     if (categoryResult) {
       categoryData.value = categoryResult
-    }
-
-    // 세부 정책 목록 가져오기
-    const policiesResult = await getSubPolicies(category.value)
-    if (policiesResult) {
-      subPolicies.value = policiesResult
     }
   } catch (error) {
     console.error('데이터 로드 실패:', error)
