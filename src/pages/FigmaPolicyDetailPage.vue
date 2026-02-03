@@ -650,8 +650,15 @@ const toggleBookmark = (detailId: number) => {
 
 /* 콘텐츠 영역 */
 .content-area {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .content-area {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
 }
 
 /* 사이드바 */
@@ -813,9 +820,21 @@ const toggleBookmark = (detailId: number) => {
 }
 
 .policy-header-description {
-  font-size: 1.125rem;
+  font-size: 0.875rem;
   line-height: 1.6;
   color: #374151;
+}
+
+@media (min-width: 640px) {
+  .policy-header-description {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .policy-header-description {
+    font-size: 1.125rem;
+  }
 }
 
 .policy-header-image {
@@ -833,11 +852,21 @@ const toggleBookmark = (detailId: number) => {
 .notification-banner {
   background: linear-gradient(to right, #FFF7ED, rgba(167, 232, 189, 0.2));
   border: 1px solid #FED7AA;
-  border-radius: 1.5rem;
-  padding: 1.25rem;
+  border-radius: 1rem;
+  padding: 1rem;
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .notification-banner {
+    border-radius: 1.5rem;
+    padding: 1.25rem;
+    gap: 1rem;
+    font-size: 1rem;
+  }
 }
 
 .notification-icon-wrapper {
@@ -859,10 +888,16 @@ const toggleBookmark = (detailId: number) => {
   background-color: white;
   border: 1px solid #E5E7EB;
   border-radius: 0.5rem;
-  padding: 1.25rem;
+  padding: 1rem;
   transition: box-shadow 0.2s;
   position: relative;
   display: block;
+}
+
+@media (min-width: 640px) {
+  .detail-card {
+    padding: 1.25rem;
+  }
 }
 
 .detail-card:hover {
@@ -870,27 +905,47 @@ const toggleBookmark = (detailId: number) => {
 }
 
 .detail-card-content {
-  padding-right: 3rem;
+  padding-right: 2.5rem;
+}
+
+@media (min-width: 640px) {
+  .detail-card-content {
+    padding-right: 3rem;
+  }
 }
 
 .detail-card-title {
   font-weight: 700;
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: #111827;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .detail-card-title {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+  }
 }
 
 .detail-card-description {
   color: #374151;
   line-height: 1.6;
   margin: 0;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .detail-card-description {
+    font-size: 1rem;
+  }
 }
 
 .bookmark-button {
   position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
-  padding: 0.625rem;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
   transition: all 0.2s;
   background-color: transparent;
@@ -900,6 +955,14 @@ const toggleBookmark = (detailId: number) => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .bookmark-button {
+    top: 1.25rem;
+    right: 1.25rem;
+    padding: 0.625rem;
+  }
 }
 
 .bookmark-button:hover {
@@ -913,10 +976,17 @@ const toggleBookmark = (detailId: number) => {
 /* 목록으로 돌아가기 버튼 */
 .back-button-wrapper {
   background-color: white;
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   border: 1px solid #F3F4F6;
-  padding: 1.5rem;
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  .back-button-wrapper {
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+  }
 }
 
 .back-to-list-button {
