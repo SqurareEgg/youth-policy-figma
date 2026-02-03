@@ -1,8 +1,8 @@
 <template>
-  <div style="min-height: 100vh; background-color: white;">
+  <div style="min-height: 100vh; background-color: white; overflow-x: hidden;">
     <FigmaHeader :current-category="categoryData?.name || null" />
 
-    <div style="min-height: 100vh; background-color: white;">
+    <div style="min-height: 100vh; background-color: white; overflow-x: hidden;">
       <!-- Back Button & Header -->
       <div style="background-color: white; border-bottom: 1px solid #E5E7EB; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
         <div style="max-width: 1280px; margin: 0 auto; padding: 1.5rem 1rem;">
@@ -67,11 +67,11 @@
                 <div class="policy-header-card">
                   <div class="policy-header-grid">
                     <div class="policy-header-content">
-                      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                      <div class="policy-header-row">
                         <div class="policy-icon-wrapper">
-                          <q-icon :name="currentPolicy.icon" size="20px" style="color: #374151;" />
+                          <q-icon :name="currentPolicy.icon" size="20px" style="color: #374351;" />
                         </div>
-                        <div>
+                        <div class="policy-header-text">
                           <p style="font-size: 0.75rem; color: #6B7280; margin-bottom: 0.25rem;">정책 {{ currentPolicy.id }}</p>
                           <h2 class="policy-header-title">{{ currentPolicy.title }}</h2>
                         </div>
@@ -93,9 +93,9 @@
                   <div class="notification-icon-wrapper">
                     <q-icon name="notifications" size="20px" style="color: #F97316;" />
                   </div>
-                  <div style="flex: 1;">
-                    <h4 style="font-weight: 600; color: #111827; margin-bottom: 0.375rem;">관심 정책 알림 서비스</h4>
-                    <p style="font-size: 0.875rem; color: #374151; line-height: 1.5;">저장 버튼을 클릭하여 관심 있는 세부 정책을 등록하면, 해당 정책의 접수 시작일과 중요한 변경사항을 알림으로 받아보실 수 있습니다.</p>
+                  <div class="notification-text">
+                    <h4 style="font-weight: 600; color: #111827; margin-bottom: 0.375rem; word-wrap: break-word; overflow-wrap: break-word;">관심 정책 알림 서비스</h4>
+                    <p style="font-size: 0.875rem; color: #374151; line-height: 1.5; word-wrap: break-word; overflow-wrap: break-word;">저장 버튼을 클릭하여 관심 있는 세부 정책을 등록하면, 해당 정책의 접수 시작일과 중요한 변경사항을 알림으로 받아보실 수 있습니다.</p>
                   </div>
                 </div>
 
@@ -600,10 +600,16 @@ const toggleBookmark = (detailId: number) => {
 </script>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+}
+
 .container {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 1rem;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 @media (min-width: 640px) {
@@ -738,13 +744,16 @@ const toggleBookmark = (detailId: number) => {
   overflow-x: auto;
   margin: 0 -1rem;
   padding: 0 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  width: calc(100% + 2rem);
 }
 
 @media (min-width: 640px) {
   .mobile-tabs {
     margin: 0 -1.5rem;
     padding: 0 1.5rem;
+    margin-bottom: 2rem;
+    width: calc(100% + 3rem);
   }
 }
 
@@ -802,7 +811,15 @@ const toggleBookmark = (detailId: number) => {
 .policy-header-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 1rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 640px) {
+  .policy-header-grid {
+    gap: 1.5rem;
+  }
 }
 
 @media (min-width: 768px) {
@@ -817,11 +834,30 @@ const toggleBookmark = (detailId: number) => {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
 @media (min-width: 768px) {
   .policy-header-content {
     padding: 2rem;
+  }
+}
+
+.policy-header-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .policy-header-row {
+    gap: 0.75rem;
   }
 }
 
@@ -833,10 +869,20 @@ const toggleBookmark = (detailId: number) => {
   flex-shrink: 0;
 }
 
+.policy-header-text {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
 .policy-header-title {
   font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.3;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -855,6 +901,9 @@ const toggleBookmark = (detailId: number) => {
   font-size: 0.875rem;
   line-height: 1.6;
   color: #374151;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
 }
 
 @media (min-width: 640px) {
@@ -919,6 +968,13 @@ const toggleBookmark = (detailId: number) => {
   flex-shrink: 0;
 }
 
+.notification-text {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
 /* 상세 내용 카드 */
 .detail-cards-container {
   display: flex;
@@ -953,6 +1009,9 @@ const toggleBookmark = (detailId: number) => {
 
 .detail-card-content {
   padding-right: 2.5rem;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
 @media (min-width: 640px) {
@@ -966,6 +1025,9 @@ const toggleBookmark = (detailId: number) => {
   font-size: 1rem;
   color: #111827;
   margin-bottom: 0.5rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
 }
 
 @media (min-width: 640px) {
@@ -980,6 +1042,9 @@ const toggleBookmark = (detailId: number) => {
   line-height: 1.6;
   margin: 0;
   font-size: 0.875rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
 }
 
 @media (min-width: 640px) {
