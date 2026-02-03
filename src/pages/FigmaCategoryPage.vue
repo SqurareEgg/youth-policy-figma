@@ -214,26 +214,17 @@ import { useQuasar } from 'quasar'
 import FigmaHeader from '../components/figma/FigmaHeader.vue'
 import FigmaFooter from '../components/figma/FigmaFooter.vue'
 import { useAuth } from '../composables/useAuth'
-import { useCategories } from '../composables/useCategories'
-import { usePolicies } from '../composables/usePolicies'
-import { useLearning } from '../composables/useLearning'
 
 const route = useRoute()
 const router = useRouter()
 const $q = useQuasar()
 
 const { user } = useAuth()
-const { getCategoryBySlug } = useCategories()
-const { policies, fetchPoliciesByCategory } = usePolicies()
-const {
-  videos,
-  quizzes,
-  qnaList,
-  fetchVideosByCategory,
-  fetchQuizzesByCategory,
-  fetchQnAByCategory,
-  fetchLearningProgress
-} = useLearning()
+
+// 하드코딩된 데이터를 위한 refs
+const videos = ref<any[]>([])
+const quizzes = ref<any[]>([])
+const qnaList = ref<any[]>([])
 
 const category = computed(() => route.params.category as string)
 const categoryData = ref<any>(null)
@@ -352,15 +343,23 @@ const fetchYouTubeThumbnail = async (videoUrl: string): Promise<string | null> =
   }
 }
 
-// 카테고리 데이터 가져오기
-const loadCategoryData = async () => {
+// 카테고리 데이터 가져오기 (하드코딩)
+const loadCategoryData = () => {
   loading.value = true
 
   try {
-    // 카테고리 정보 가져오기
-    const categoryInfo = await getCategoryBySlug(category.value)
+    // 카테고리 정보 설정
+    const categoryMap: Record<string, any> = {
+      'job': { id: 1, name: '일자리', slug: 'job' },
+      'housing': { id: 2, name: '주거', slug: 'housing' },
+      'education': { id: 3, name: '교육', slug: 'education' },
+      'finance-welfare-culture': { id: 4, name: '금융･복지･문화', slug: 'finance-welfare-culture' },
+      'participation': { id: 5, name: '참여', slug: 'participation' }
+    }
 
-    if (!categoryInfo) {
+    categoryData.value = categoryMap[category.value]
+
+    if (!categoryData.value) {
       $q.notify({
         type: 'negative',
         message: '카테고리를 찾을 수 없습니다.',
@@ -370,37 +369,53 @@ const loadCategoryData = async () => {
       return
     }
 
-    categoryData.value = categoryInfo
-
-    // 정책 가져오기
-    await fetchPoliciesByCategory(category.value)
-
-    // Q&A 가져오기
-    await fetchQnAByCategory(categoryInfo.id)
-
-    // 영상 가져오기
-    await fetchVideosByCategory(categoryInfo.id, user.value?.id)
-
-    // 영상 썸네일 업데이트 (YouTube oEmbed API 사용)
-    if (videos.value.length > 0) {
-      for (const video of videos.value) {
-        if (video.video_url) {
-          const thumbnail = await fetchYouTubeThumbnail(video.video_url)
-          if (thumbnail) {
-            video.thumbnail_url = thumbnail
-          }
-        }
-      }
+    // 하드코딩된 영상 데이터
+    const videoMap: Record<string, any[]> = {
+      'job': [
+        { id: 1, title: '일자리 정책 이해하기', duration: '12:30', thumbnail_url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
+        { id: 2, title: '2026년 신규 일자리 정책 안내', duration: '08:45', thumbnail_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
+        { id: 3, title: '일자리 혜택 신청 방법', duration: '15:20', thumbnail_url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false }
+      ],
+      'housing': [
+        { id: 4, title: '주거 정책 이해하기', duration: '12:30', thumbnail_url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
+        { id: 5, title: '2026년 신규 주거 정책 안내', duration: '08:45', thumbnail_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
+        { id: 6, title: '주거 혜택 신청 방법', duration: '15:20', thumbnail_url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false }
+      ],
+      'education': [
+        { id: 7, title: '교육 정책 이해하기', duration: '12:30', thumbnail_url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
+        { id: 8, title: '2026년 신규 교육 정책 안내', duration: '08:45', thumbnail_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
+        { id: 9, title: '교육 혜택 신청 방법', duration: '15:20', thumbnail_url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false }
+      ],
+      'finance-welfare-culture': [
+        { id: 10, title: '금융･복지･문화 정책 이해하기', duration: '12:30', thumbnail_url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
+        { id: 11, title: '2026년 신규 금융･복지･문화 정책 안내', duration: '08:45', thumbnail_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
+        { id: 12, title: '금융･복지･문화 혜택 신청 방법', duration: '15:20', thumbnail_url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false }
+      ],
+      'participation': [
+        { id: 13, title: '참여 정책 이해하기', duration: '12:30', thumbnail_url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
+        { id: 14, title: '2026년 신규 참여 정책 안내', duration: '08:45', thumbnail_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
+        { id: 15, title: '참여 혜택 신청 방법', duration: '15:20', thumbnail_url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false }
+      ]
     }
 
-    // 퀴즈 가져오기
-    await fetchQuizzesByCategory(categoryInfo.id, user.value?.id)
+    videos.value = videoMap[category.value] || []
 
-    // 이수율 가져오기 (로그인 시)
-    if (user.value) {
-      const progress = await fetchLearningProgress(user.value.id, categoryInfo.id)
-      completionRate.value = progress?.completion_percentage || 0
+    // 하드코딩된 퀴즈 데이터 (각 카테고리당 1개 퀴즈)
+    const quizMap: Record<string, any[]> = {
+      'job': [{ id: 1, title: '일자리 정책 기본 Quiz', description: '일자리 정책의 기본 내용을 확인하는 퀴즈입니다.', completed: false, passed: false }],
+      'housing': [{ id: 3, title: '주거 정책 기본 Quiz', description: '주거 정책의 기본 내용을 확인하는 퀴즈입니다.', completed: false, passed: false }],
+      'education': [{ id: 4, title: '교육 정책 기본 Quiz', description: '교육 정책의 기본 내용을 확인하는 퀴즈입니다.', completed: false, passed: false }],
+      'finance-welfare-culture': [{ id: 5, title: '금융･복지･문화 정책 기본 Quiz', description: '금융･복지･문화 정책의 기본 내용을 확인하는 퀴즈입니다.', completed: false, passed: false }],
+      'participation': [{ id: 6, title: '참여 정책 기본 Quiz', description: '참여 정책의 기본 내용을 확인하는 퀴즈입니다.', completed: false, passed: false }]
     }
+
+    quizzes.value = quizMap[category.value] || []
+
+    // Q&A는 빈 배열로 (Q&A 페이지에서 하드코딩된 데이터 사용)
+    qnaList.value = []
+
+    // 이수율 초기화
+    completionRate.value = 0
   } catch (error: any) {
     console.error('카테고리 데이터 로딩 에러:', error)
     $q.notify({
