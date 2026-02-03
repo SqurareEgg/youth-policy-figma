@@ -170,6 +170,7 @@
                           flat
                           no-caps
                           class="secondary-button"
+                          @click="handleQnAClick"
                         />
                       </div>
 
@@ -437,6 +438,15 @@ const viewPolicy = (policyId: number) => {
     params: {
       category: category.value,
       policyId: policyId.toString()
+    }
+  })
+}
+
+const handleQnAClick = () => {
+  router.push({
+    name: 'qna',
+    params: {
+      category: category.value
     }
   })
 }
