@@ -25,7 +25,7 @@
 
       <!-- 메인 레이아웃 -->
       <div class="container">
-        <div style="display: flex; gap: 4rem;">
+        <div class="main-layout">
           <!-- 사이드바 (데스크탑) -->
           <aside class="gt-md sidebar">
             <div style="background-color: white; border: 1px solid #E5E7EB; border-radius: 1rem; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); padding: 1rem;">
@@ -44,7 +44,7 @@
           </aside>
 
           <!-- 메인 콘텐츠 -->
-          <main style="flex: 1; padding-right: 0;">
+          <main class="main-content">
             <!-- 모바일 탭 (모바일만) -->
             <div class="lt-lg mobile-tabs">
               <div style="display: flex; gap: 0.5rem; padding: 1rem 0; min-width: max-content;">
@@ -618,6 +618,25 @@ const toggleBookmark = (detailId: number) => {
   }
 }
 
+/* 메인 레이아웃 */
+.main-layout {
+  display: flex;
+  gap: 0;
+}
+
+@media (min-width: 1024px) {
+  .main-layout {
+    gap: 4rem;
+  }
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+}
+
 /* 뒤로가기 버튼 */
 .back-button {
   display: flex;
@@ -652,6 +671,9 @@ const toggleBookmark = (detailId: number) => {
 .content-area {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 @media (min-width: 768px) {
@@ -756,15 +778,25 @@ const toggleBookmark = (detailId: number) => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* 정책 헤더 카드 */
 .policy-header-card {
   background-color: white;
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   border: 1px solid #F3F4F6;
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .policy-header-card {
+    border-radius: 1.5rem;
+  }
 }
 
 .policy-header-grid {
@@ -839,7 +871,14 @@ const toggleBookmark = (detailId: number) => {
 
 .policy-header-image {
   position: relative;
-  height: 16rem;
+  height: 12rem;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .policy-header-image {
+    height: 16rem;
+  }
 }
 
 @media (min-width: 768px) {
@@ -858,6 +897,9 @@ const toggleBookmark = (detailId: number) => {
   align-items: flex-start;
   gap: 0.75rem;
   font-size: 0.875rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 @media (min-width: 640px) {
@@ -882,6 +924,8 @@ const toggleBookmark = (detailId: number) => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .detail-card {
@@ -892,6 +936,9 @@ const toggleBookmark = (detailId: number) => {
   transition: box-shadow 0.2s;
   position: relative;
   display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 @media (min-width: 640px) {
