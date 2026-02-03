@@ -10,7 +10,7 @@
       </div>
 
       <!-- 카드 그리드 -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-6">
         <div
           v-for="(card, index) in cards"
           :key="card.id"
