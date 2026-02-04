@@ -383,13 +383,13 @@ const loadCategoryData = async () => {
       console.error('영상 데이터 로딩 에러:', videoError)
       videos.value = []
     } else {
-      // YouTube 썸네일 URL 생성
+      // YouTube 썸네일 URL 생성 (hqdefault는 대부분의 영상에서 사용 가능)
       videos.value = (videoData || []).map(video => {
         const videoId = extractYouTubeId(video.video_url || '')
         return {
           ...video,
           thumbnail_url: videoId
-            ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+            ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
             : 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800',
           completed: false
         }
@@ -524,12 +524,16 @@ const handleImageError = (event: Event) => {
   const img = event.target as HTMLImageElement
   const currentSrc = img.src
 
-  // maxresdefault 실패 시 hqdefault로 시도
-  if (currentSrc.includes('maxresdefault.jpg')) {
-    img.src = currentSrc.replace('maxresdefault.jpg', 'hqdefault.jpg')
+  // hqdefault 실패 시 mqdefault로 시도
+  if (currentSrc.includes('hqdefault.jpg')) {
+    img.src = currentSrc.replace('hqdefault.jpg', 'mqdefault.jpg')
   }
-  // hqdefault 실패 시 기본 이미지로
-  else if (currentSrc.includes('hqdefault.jpg')) {
+  // mqdefault 실패 시 sddefault로 시도
+  else if (currentSrc.includes('mqdefault.jpg')) {
+    img.src = currentSrc.replace('mqdefault.jpg', 'sddefault.jpg')
+  }
+  // sddefault 실패 시 기본 이미지로
+  else if (currentSrc.includes('sddefault.jpg')) {
     img.src = 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800'
   }
   // 그 외의 경우 기본 이미지로
