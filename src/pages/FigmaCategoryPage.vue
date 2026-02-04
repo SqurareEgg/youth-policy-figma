@@ -215,6 +215,7 @@ import FigmaHeader from '../components/figma/FigmaHeader.vue'
 import FigmaFooter from '../components/figma/FigmaFooter.vue'
 import { useAuth } from '../composables/useAuth'
 import { useLearning } from '../composables/useLearning'
+import { supabase } from '../lib/supabase'
 
 const route = useRoute()
 const router = useRouter()
@@ -371,36 +372,29 @@ const loadCategoryData = async () => {
       return
     }
 
-    // 하드코딩된 영상 데이터
-    const videoMap: Record<string, any[]> = {
-      'job': [
-        { id: 1, title: '일자리 정책 이해하기', duration: '12:30', thumbnail_url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
-        { id: 2, title: '2026년 신규 일자리 정책 안내', duration: '08:45', thumbnail_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
-        { id: 3, title: '일자리 혜택 신청 방법', duration: '15:20', thumbnail_url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false }
-      ],
-      'housing': [
-        { id: 4, title: '주거 정책 이해하기', duration: '12:30', thumbnail_url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
-        { id: 5, title: '2026년 신규 주거 정책 안내', duration: '08:45', thumbnail_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
-        { id: 6, title: '주거 혜택 신청 방법', duration: '15:20', thumbnail_url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false }
-      ],
-      'education': [
-        { id: 7, title: '교육 정책 이해하기', duration: '12:30', thumbnail_url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
-        { id: 8, title: '2026년 신규 교육 정책 안내', duration: '08:45', thumbnail_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
-        { id: 9, title: '교육 혜택 신청 방법', duration: '15:20', thumbnail_url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false }
-      ],
-      'finance-welfare-culture': [
-        { id: 10, title: '금융･복지･문화 정책 이해하기', duration: '12:30', thumbnail_url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
-        { id: 11, title: '2026년 신규 금융･복지･문화 정책 안내', duration: '08:45', thumbnail_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
-        { id: 12, title: '금융･복지･문화 혜택 신청 방법', duration: '15:20', thumbnail_url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false }
-      ],
-      'participation': [
-        { id: 13, title: '참여 정책 이해하기', duration: '12:30', thumbnail_url: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
-        { id: 14, title: '2026년 신규 참여 정책 안내', duration: '08:45', thumbnail_url: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false },
-        { id: 15, title: '참여 혜택 신청 방법', duration: '15:20', thumbnail_url: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400', video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', completed: false }
-      ]
-    }
+    // DB에서 영상 데이터 가져오기
+    const { data: videoData, error: videoError } = await supabase
+      .from('videos')
+      .select('*')
+      .eq('category_id', categoryData.value.id)
+      .order('display_order', { ascending: true })
 
-    videos.value = videoMap[category.value] || []
+    if (videoError) {
+      console.error('영상 데이터 로딩 에러:', videoError)
+      videos.value = []
+    } else {
+      // YouTube 썸네일 URL 생성
+      videos.value = (videoData || []).map(video => {
+        const videoId = extractYouTubeId(video.video_url || '')
+        return {
+          ...video,
+          thumbnail_url: videoId
+            ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+            : 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800',
+          completed: false
+        }
+      })
+    }
 
     // 하드코딩된 퀴즈 데이터 (각 카테고리당 1개 퀴즈)
     const quizMap: Record<string, any[]> = {
