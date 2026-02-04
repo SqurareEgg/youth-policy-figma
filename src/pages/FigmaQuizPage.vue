@@ -144,7 +144,7 @@
               unelevated
               no-caps
               @click="nextQuestion"
-              :disable="!userAnswers[currentQuestion.id]"
+              :disable="userAnswers[currentQuestion.id] === undefined"
               style="flex: 1; padding: 0.75rem; font-size: 1rem;"
             />
             <q-btn
