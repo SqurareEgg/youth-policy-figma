@@ -189,19 +189,35 @@ const handleSignupClick = () => {
 }
 
 const handleLogout = async () => {
-  const result = await signOut()
-  if (result.success) {
-    $q.notify({
-      type: 'positive',
-      message: '로그아웃되었습니다.',
-      position: 'top'
-    })
-    mobileMenuOpen.value = false
-    router.push('/')
-  } else {
+  try {
+    console.log('🔓 [Header] 로그아웃 시작...')
+    const result = await signOut()
+
+    if (result.success) {
+      console.log('✅ [Header] 로그아웃 성공')
+      $q.notify({
+        type: 'positive',
+        message: '로그아웃되었습니다.',
+        position: 'top'
+      })
+      mobileMenuOpen.value = false
+
+      // 홈으로 이동 후 페이지 새로고침하여 상태 완전히 초기화
+      await router.push('/')
+      window.location.reload()
+    } else {
+      console.error('❌ [Header] 로그아웃 실패:', result.error)
+      $q.notify({
+        type: 'negative',
+        message: result.error || '로그아웃에 실패했습니다.',
+        position: 'top'
+      })
+    }
+  } catch (error: any) {
+    console.error('❌ [Header] 로그아웃 에러:', error)
     $q.notify({
       type: 'negative',
-      message: '로그아웃에 실패했습니다.',
+      message: '로그아웃 중 오류가 발생했습니다.',
       position: 'top'
     })
   }

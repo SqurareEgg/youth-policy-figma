@@ -93,16 +93,27 @@ export function useAuth() {
   // 로그아웃
   const signOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut()
-      if (error) throw error
+      console.log('🔓 [Auth] 로그아웃 시도...')
 
+      // Supabase 로그아웃
+      const { error } = await supabase.auth.signOut()
+      if (error) {
+        console.error('❌ [Auth] Supabase 로그아웃 에러:', error)
+        throw error
+      }
+
+      console.log('✅ [Auth] Supabase 로그아웃 성공')
+
+      // 상태 초기화
       user.value = null
       session.value = null
       profile.value = null
 
+      console.log('✅ [Auth] 상태 초기화 완료')
+
       return { success: true }
     } catch (error: any) {
-      console.error('로그아웃 에러:', error.message)
+      console.error('❌ [Auth] 로그아웃 에러:', error.message)
       return { success: false, error: error.message }
     }
   }
