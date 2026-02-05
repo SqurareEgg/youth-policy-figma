@@ -53,7 +53,7 @@
           <main class="main-content">
             <!-- 모바일 탭 (모바일만) -->
             <div class="lt-lg mobile-tabs">
-              <div style="display: flex; gap: 0.5rem; padding: 1rem 0; min-width: max-content;">
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; padding: 1rem 0;">
                 <button
                   v-for="(subPolicy, index) in subPolicies"
                   :key="subPolicy.id"
@@ -1097,7 +1097,6 @@ const handleImageError = (event: Event) => {
 .mobile-tabs {
   background-color: white;
   border-bottom: 1px solid #E5E7EB;
-  overflow-x: auto;
   margin: 0 -1rem;
   padding: 0 1rem;
   margin-bottom: 1.5rem;
@@ -1117,10 +1116,10 @@ const handleImageError = (event: Event) => {
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.5rem;
   border-radius: 0.75rem;
   transition: all 0.2s;
-  min-width: 100px;
+  width: 100%;
   background-color: #F3F4F6;
   color: #374151;
   border: none;
