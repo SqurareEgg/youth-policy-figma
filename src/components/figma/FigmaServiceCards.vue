@@ -1,5 +1,5 @@
 <template>
-  <section class="py-12 sm:py-16 lg:py-20 bg-white">
+  <section class="py-6 sm:py-16 lg:py-20 bg-white">
     <div class="container mx-auto px-4 sm:px-6">
       <!-- 섹션 헤더 -->
       <div class="mb-10 sm:mb-12">
