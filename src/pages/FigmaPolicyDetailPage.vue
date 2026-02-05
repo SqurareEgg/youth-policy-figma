@@ -93,9 +93,9 @@
                   <div class="notification-text">
                     <div style="display: flex; align-items: center; gap: 0.375rem; margin-bottom: 0.125rem;">
                       <div class="notification-icon-wrapper">
-                        <q-icon name="notifications" size="20px" style="color: #F97316;" />
+                        <q-icon name="notifications" size="18px" style="color: #F97316;" />
                       </div>
-                      <h4 style="font-weight: 600; color: #111827; word-wrap: break-word; overflow-wrap: break-word; margin: 0;">관심 정책 알림 서비스</h4>
+                      <h4 style="font-size: 0.9375rem; font-weight: 600; color: #111827; word-wrap: break-word; overflow-wrap: break-word; margin: 0;">관심 정책 알림 서비스</h4>
                     </div>
                     <p style="font-size: 0.875rem; color: #374151; line-height: 1.4; word-wrap: break-word; overflow-wrap: break-word;">저장 버튼을 클릭하여 관심 있는 세부 정책을 등록하면, 해당 정책의 접수 시작일과 중요한 변경사항을 알림으로 받아보실 수 있습니다.</p>
                   </div>
@@ -947,7 +947,7 @@ const toggleBookmark = (detailId: number) => {
   background: linear-gradient(to right, #FFF7ED, rgba(167, 232, 189, 0.2));
   border: 1px solid #FED7AA;
   border-radius: 0.75rem;
-  padding: 0.75rem;
+  padding: 0.875rem 0.75rem;
   font-size: 0.875rem;
   width: 100%;
   max-width: 100%;
@@ -957,7 +957,7 @@ const toggleBookmark = (detailId: number) => {
 @media (min-width: 640px) {
   .notification-banner {
     border-radius: 1rem;
-    padding: 1.125rem 1rem;
+    padding: 1.25rem 1rem;
     font-size: 1rem;
   }
 }
