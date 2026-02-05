@@ -947,7 +947,7 @@ const toggleBookmark = (detailId: number) => {
   background: linear-gradient(to right, #FFF7ED, rgba(167, 232, 189, 0.2));
   border: 1px solid #FED7AA;
   border-radius: 0.75rem;
-  padding: 0.625rem 0.75rem;
+  padding: 0.75rem;
   font-size: 0.875rem;
   width: 100%;
   max-width: 100%;
@@ -957,7 +957,7 @@ const toggleBookmark = (detailId: number) => {
 @media (min-width: 640px) {
   .notification-banner {
     border-radius: 1rem;
-    padding: 1rem;
+    padding: 1.125rem 1rem;
     font-size: 1rem;
   }
 }
