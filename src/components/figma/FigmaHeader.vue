@@ -70,18 +70,43 @@
           </span>
         </button>
 
-        <!-- Mobile Menu Button -->
-        <q-btn
-          flat
-          dense
-          round
-          :icon="mobileMenuOpen ? 'close' : 'menu'"
-          @click="mobileMenuOpen = !mobileMenuOpen"
-          :style="{
-            backgroundColor: mobileMenuOpen ? '#FFF7ED' : 'transparent',
-            color: mobileMenuOpen ? '#F97316' : '#374151'
-          }"
-        />
+        <!-- 우측 버튼들 -->
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <!-- 로그인/회원가입 버튼 -->
+          <template v-if="isAuthenticated">
+            <q-btn
+              flat
+              dense
+              no-caps
+              label="로그아웃"
+              @click="handleLogout"
+              style="color: #374151; font-size: 0.75rem;"
+            />
+          </template>
+          <template v-else>
+            <q-btn
+              flat
+              dense
+              no-caps
+              label="로그인"
+              @click="handleLoginClick"
+              style="color: #374151; font-size: 0.75rem;"
+            />
+          </template>
+
+          <!-- Mobile Menu Button -->
+          <q-btn
+            flat
+            dense
+            round
+            :icon="mobileMenuOpen ? 'close' : 'menu'"
+            @click="mobileMenuOpen = !mobileMenuOpen"
+            :style="{
+              backgroundColor: mobileMenuOpen ? '#FFF7ED' : 'transparent',
+              color: mobileMenuOpen ? '#F97316' : '#374151'
+            }"
+          />
+        </div>
       </div>
     </div>
 
@@ -89,7 +114,7 @@
     <div v-if="mobileMenuOpen" style="background-color: white; border-top: 1px solid #E5E7EB;">
       <div class="container" style="padding: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
         <!-- 카테고리 -->
-        <div style="padding-bottom: 0.75rem;">
+        <div>
           <p style="font-size: 0.75rem; color: #6B7280; margin-bottom: 0.5rem;">카테고리</p>
           <q-btn
             v-for="category in categories"
@@ -108,35 +133,14 @@
             style="font-size: 0.875rem; padding: 0.5rem 0;"
           />
         </div>
-        <!-- 로그인/회원가입 -->
-        <template v-if="isAuthenticated">
-          <div style="padding: 0.75rem 0; border-top: 1px solid #E5E7EB;">
-            <p style="color: #374151; font-size: 0.875rem; margin-bottom: 0.5rem;">{{ profile?.name || user?.email }}님</p>
-            <q-btn
-              flat
-              no-caps
-              align="left"
-              label="로그아웃"
-              @click="handleLogout"
-              style="color: #374151; font-size: 0.875rem; justify-content: flex-start; width: 100%;"
-            />
-          </div>
-        </template>
-        <template v-else>
-          <q-btn
-            flat
-            no-caps
-            align="left"
-            label="로그인"
-            @click="handleLoginClick"
-            style="color: #374151; font-size: 0.875rem; justify-content: flex-start; width: 100%;"
-          />
+        <!-- 회원가입 버튼 (비로그인 시에만 표시) -->
+        <template v-if="!isAuthenticated">
           <q-btn
             unelevated
             no-caps
             label="회원가입"
             @click="handleSignupClick"
-            style="background-color: #F97316; color: white; font-size: 0.875rem; width: 100%;"
+            style="background-color: #F97316; color: white; font-size: 0.875rem; width: 100%; margin-top: 0.5rem;"
           />
         </template>
       </div>
