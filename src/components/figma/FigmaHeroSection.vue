@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-white py-12 sm:py-16 lg:py-20 border-b border-gray-100">
+  <section class="bg-white py-6 sm:py-16 lg:py-20 border-b border-gray-100">
     <div class="container mx-auto px-4 sm:px-6">
       <div class="hero-grid">
         <!-- 텍스트 콘텐츠 (데스크탑: 왼쪽, 모바일: 위) -->
