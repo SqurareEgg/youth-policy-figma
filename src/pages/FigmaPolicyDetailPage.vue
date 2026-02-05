@@ -945,9 +945,9 @@ const toggleBookmark = (detailId: number) => {
   background: linear-gradient(to right, #FFF7ED, rgba(167, 232, 189, 0.2));
   border: 1px solid #FED7AA;
   border-radius: 0.75rem;
-  padding: 0.75rem;
+  padding: 0.625rem 0.75rem;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
   font-size: 0.875rem;
   width: 100%;
@@ -958,7 +958,7 @@ const toggleBookmark = (detailId: number) => {
 @media (min-width: 640px) {
   .notification-banner {
     border-radius: 1rem;
-    padding: 0.875rem 1rem;
+    padding: 0.75rem 1rem;
     gap: 0.625rem;
     font-size: 1rem;
   }
@@ -972,6 +972,7 @@ const toggleBookmark = (detailId: number) => {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 0.125rem;
 }
 
 .notification-text {
