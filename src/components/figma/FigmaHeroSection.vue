@@ -99,7 +99,7 @@ const newsSlides = [
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 1.25rem;
   align-items: center;
 }
 
@@ -119,13 +119,15 @@ const newsSlides = [
 h1 {
   font-size: 1.75rem;
   font-weight: 700;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
   line-height: 1.25;
+  letter-spacing: -0.02em;
 }
 
 @media (min-width: 640px) {
   h1 {
     font-size: 2.25rem;
+    letter-spacing: normal;
   }
 }
 
@@ -137,14 +139,20 @@ h1 {
 }
 
 .hero-content {
-  margin-bottom: 2rem;
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .hero-content {
+    margin-bottom: 2rem;
+  }
 }
 
 .info-card {
   background-color: #F9FAFB;
   border: 1px solid #E5E7EB;
   border-radius: 1rem;
-  padding: 1.5rem;
+  padding: 1.125rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
@@ -157,7 +165,7 @@ h1 {
 .card-divider {
   height: 1px;
   background-color: #E5E7EB;
-  margin: 1.25rem 0;
+  margin: 0.875rem 0;
 }
 
 @media (min-width: 640px) {
@@ -182,7 +190,13 @@ h1 {
 .hero-bullets {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .hero-bullets {
+    gap: 0.75rem;
+  }
 }
 
 .bullet-item {
