@@ -958,9 +958,10 @@ const toggleBookmark = (detailId: number) => {
 @media (min-width: 640px) {
   .notification-banner {
     border-radius: 1rem;
-    padding: 0.75rem 1rem;
-    gap: 0.625rem;
+    padding: 1rem;
+    gap: 0.75rem;
     font-size: 1rem;
+    align-items: center;
   }
 }
 
@@ -973,6 +974,12 @@ const toggleBookmark = (detailId: number) => {
   align-items: center;
   justify-content: center;
   margin-top: 0.125rem;
+}
+
+@media (min-width: 640px) {
+  .notification-icon-wrapper {
+    margin-top: 0;
+  }
 }
 
 .notification-text {
