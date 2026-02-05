@@ -10,13 +10,13 @@
       </div>
 
       <!-- 카드 그리드 -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-6">
+      <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
         <div
           v-for="(card, index) in cards"
           :key="card.id"
           @click="() => handleCardClick(card.slug)"
           :class="[
-            'bg-white rounded-2xl p-6 sm:p-7 transition-all cursor-pointer',
+            'bg-white rounded-2xl p-4 sm:p-7 transition-all cursor-pointer',
             index === 0 ? 'sm:col-span-2 lg:col-span-1' : ''
           ]"
           style="border: 1px solid #E5E7EB; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);"
@@ -169,20 +169,32 @@ const handleCardClick = (slug: string) => {
 /* 카드 헤더 */
 .card-header {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .card-header {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    text-align: left;
+  }
 }
 
 .card-icon {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 0;
 }
 
 @media (min-width: 640px) {
@@ -194,7 +206,7 @@ const handleCardClick = (slug: string) => {
 }
 
 .card-icon-svg {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 @media (min-width: 640px) {
@@ -209,7 +221,7 @@ const handleCardClick = (slug: string) => {
 }
 
 .card-title {
-  font-size: 1.25rem;
+  font-size: 0.9375rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
   line-height: 1.3;
@@ -225,23 +237,43 @@ const handleCardClick = (slug: string) => {
 }
 
 .card-description {
-  font-size: 0.875rem;
+  font-size: 0.6875rem;
   color: #6B7280;
-  line-height: 1.5;
+  line-height: 1.4;
   margin: 0;
+}
+
+@media (min-width: 640px) {
+  .card-description {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
 }
 
 /* 주요 정책 예시 */
 .card-examples {
-  padding-top: 0.75rem;
+  padding-top: 0.5rem;
   border-top: 1px solid #F3F4F6;
 }
 
+@media (min-width: 640px) {
+  .card-examples {
+    padding-top: 0.75rem;
+  }
+}
+
 .examples-title {
-  font-size: 0.75rem;
+  font-size: 0.625rem;
   color: #9CA3AF;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   padding: 0;
+}
+
+@media (min-width: 640px) {
+  .examples-title {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
 }
 
 .examples-list {
@@ -250,28 +282,47 @@ const handleCardClick = (slug: string) => {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.375rem;
+  gap: 0.125rem;
+}
+
+@media (min-width: 640px) {
+  .examples-list {
+    gap: 0.375rem;
+  }
 }
 
 .example-item {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: 0.25rem;
   padding: 0;
   margin: 0;
+}
+
+@media (min-width: 640px) {
+  .example-item {
+    gap: 0.5rem;
+  }
 }
 
 .example-bullet {
   color: #D1D5DB;
   margin-top: 0.125rem;
   flex-shrink: 0;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .example-text {
   flex: 1;
-  font-size: 0.875rem;
+  font-size: 0.6875rem;
   color: #374151;
-  line-height: 1.5;
+  line-height: 1.4;
+}
+
+@media (min-width: 640px) {
+  .example-text {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
 }
 </style>
