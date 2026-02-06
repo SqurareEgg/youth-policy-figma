@@ -453,6 +453,35 @@ export interface Database {
           created_at?: string
         }
       }
+      page_views: {
+        Row: {
+          id: number
+          session_id: string
+          page_path: string
+          referrer: string | null
+          user_agent: string | null
+          ip_address: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: number
+          session_id: string
+          page_path: string
+          referrer?: string | null
+          user_agent?: string | null
+          ip_address?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: number
+          session_id?: string
+          page_path?: string
+          referrer?: string | null
+          user_agent?: string | null
+          ip_address?: string | null
+          created_at?: string
+        }
+      }
     }
     Views: {
       policy_full_view: {
@@ -494,6 +523,22 @@ export interface Database {
           author_email: string
           category_name: string | null
           comment_count: number
+        }
+      }
+      page_view_stats: {
+        Row: {
+          page_path: string
+          total_views: number
+          unique_visitors: number
+          view_date: string
+        }
+      }
+      daily_stats: {
+        Row: {
+          date: string
+          total_views: number
+          unique_visitors: number
+          pages_visited: number
         }
       }
     }

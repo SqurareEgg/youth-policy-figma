@@ -609,3 +609,56 @@ SELECT
 FROM public.community_posts cp
 JOIN public.profiles p ON cp.user_id = p.id
 LEFT JOIN public.categories c ON cp.category_id = c.id;
+
+-- ============================================
+-- 16. PAGE VIEWS TABLE (접속자 추적)
+-- ============================================
+CREATE TABLE public.page_views (
+  id SERIAL PRIMARY KEY,
+  session_id TEXT NOT NULL, -- 브라우저 세션 ID (고유 방문자 구분용)
+  page_path TEXT NOT NULL, -- 방문한 페이지 경로
+  referrer TEXT, -- 유입 경로
+  user_agent TEXT, -- 브라우저 정보
+  ip_address TEXT, -- IP 주소 (선택사항)
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW())
+);
+
+-- Page views are public for analytics
+ALTER TABLE public.page_views ENABLE ROW LEVEL SECURITY;
+
+-- Anyone can insert page views (for analytics)
+CREATE POLICY "Anyone can insert page views"
+  ON public.page_views FOR INSERT
+  WITH CHECK (true);
+
+-- Only admins can view page views (for privacy)
+-- Note: You may want to create an admin role or adjust this policy
+CREATE POLICY "Public can view page view stats"
+  ON public.page_views FOR SELECT
+  USING (true);
+
+-- Indexes for performance
+CREATE INDEX idx_page_views_session ON public.page_views(session_id);
+CREATE INDEX idx_page_views_page_path ON public.page_views(page_path);
+CREATE INDEX idx_page_views_created ON public.page_views(created_at DESC);
+
+-- View: Page view statistics
+CREATE OR REPLACE VIEW page_view_stats AS
+SELECT
+  page_path,
+  COUNT(*) AS total_views,
+  COUNT(DISTINCT session_id) AS unique_visitors,
+  DATE(created_at) AS view_date
+FROM public.page_views
+GROUP BY page_path, DATE(created_at);
+
+-- View: Daily statistics
+CREATE OR REPLACE VIEW daily_stats AS
+SELECT
+  DATE(created_at) AS date,
+  COUNT(*) AS total_views,
+  COUNT(DISTINCT session_id) AS unique_visitors,
+  COUNT(DISTINCT page_path) AS pages_visited
+FROM public.page_views
+GROUP BY DATE(created_at)
+ORDER BY DATE(created_at) DESC;

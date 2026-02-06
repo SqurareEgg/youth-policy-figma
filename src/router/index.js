@@ -6,6 +6,7 @@ import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
 import { supabase } from '../lib/supabase'
+import { usePageViews } from '../composables/usePageViews'
 
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
@@ -41,6 +42,16 @@ export default route(function (/* { store, ssrContext } */) {
       // 인증 불필요한 페이지는 그냥 진행
       next()
     }
+  })
+
+  // 페이지뷰 추적 (페이지 이동 후 실행)
+  Router.afterEach((to, from) => {
+    const { trackPageView } = usePageViews()
+
+    // 페이지뷰 기록
+    trackPageView(to.path).catch(err => {
+      console.error('📊 [Router] 페이지뷰 기록 실패:', err)
+    })
   })
 
   console.log('🔧 [Router] 라우터 초기화 완료')
